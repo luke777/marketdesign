@@ -49,7 +49,7 @@ if input_extension == '.csv':
 elif input_extension == '.json':
     with open(args.input) as json_file:
         dct = json.load(json_file)
-        problem = decode_problem(dct)
+        p = decode_problem(dct)
         if not args.free_disposal:
             raise ValueError('free-disposal should be set in the json not via command line.')
 else:

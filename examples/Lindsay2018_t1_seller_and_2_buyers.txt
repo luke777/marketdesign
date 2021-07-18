@@ -1,0 +1,3 @@
+Seller: -10 1
+Buyer L: 22 -1
+Buyer H: 26 -1

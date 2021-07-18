@@ -1,0 +1,368 @@
+<!doctype html>
+<html>
+  <head>
+    <title>Market solver API</title>
+    <style type="text/css">
+      body {
+	font-family: Trebuchet MS, sans-serif;
+	font-size: 15px;
+	color: #444;
+	margin-right: 24px;
+}
+
+h1	{
+	font-size: 25px;
+}
+h2	{
+	font-size: 20px;
+}
+h3	{
+	font-size: 16px;
+	font-weight: bold;
+}
+hr	{
+	height: 1px;
+	border: 0;
+	color: #ddd;
+	background-color: #ddd;
+}
+
+.app-desc {
+  clear: both;
+  margin-left: 20px;
+}
+.param-name {
+  width: 100%;
+}
+.license-info {
+  margin-left: 20px;
+}
+
+.license-url {
+  margin-left: 20px;
+}
+
+.model {
+  margin: 0 0 0px 20px;
+}
+
+.method {
+  margin-left: 20px;
+}
+
+.method-notes	{
+	margin: 10px 0 20px 0;
+	font-size: 90%;
+	color: #555;
+}
+
+pre {
+  padding: 10px;
+  margin-bottom: 2px;
+}
+
+.http-method {
+ text-transform: uppercase;
+}
+
+pre.get {
+  background-color: #0f6ab4;
+}
+
+pre.post {
+  background-color: #10a54a;
+}
+
+pre.put {
+  background-color: #c5862b;
+}
+
+pre.delete {
+  background-color: #a41e22;
+}
+
+.huge	{
+	color: #fff;
+}
+
+pre.example {
+  background-color: #f3f3f3;
+  padding: 10px;
+  border: 1px solid #ddd;
+}
+
+code {
+  white-space: pre;
+}
+
+.nickname {
+  font-weight: bold;
+}
+
+.method-path {
+  font-size: 1.5em;
+  background-color: #0f6ab4;
+}
+
+.up {
+  float:right;
+}
+
+.parameter {
+  width: 500px;
+}
+
+.param {
+  width: 500px;
+  padding: 10px 0 0 20px;
+  font-weight: bold;
+}
+
+.param-desc {
+  width: 700px;
+  padding: 0 0 0 20px;
+  color: #777;
+}
+
+.param-type {
+  font-style: italic;
+}
+
+.param-enum-header {
+width: 700px;
+padding: 0 0 0 60px;
+color: #777;
+font-weight: bold;
+}
+
+.param-enum {
+width: 700px;
+padding: 0 0 0 80px;
+color: #777;
+font-style: italic;
+}
+
+.field-label {
+  padding: 0;
+  margin: 0;
+  clear: both;
+}
+
+.field-items	{
+	padding: 0 0 15px 0;
+	margin-bottom: 15px;
+}
+
+.return-type {
+  clear: both;
+  padding-bottom: 10px;
+}
+
+.param-header {
+  font-weight: bold;
+}
+
+.method-tags {
+  text-align: right;
+}
+
+.method-tag {
+  background: none repeat scroll 0% 0% #24A600;
+  border-radius: 3px;
+  padding: 2px 10px;
+  margin: 2px;
+  color: #FFF;
+  display: inline-block;
+  text-decoration: none;
+}
+
+    </style>
+  </head>
+  <body>
+  <h1>Market solver API</h1>
+    <div class="app-desc">This is the api for the market solver.</div>   
+  <h2>Access</h2>
+
+  <h2><a name="__Methods">Methods</a></h2>
+  [ Jump to <a href="#__Models">Models</a> ]
+
+  <h3>Table of Contents </h3>
+  <div class="method-summary"></div>
+  <h4><a href="#Default">Default</a></h4>
+  <ul>
+  <li><a href="#solveRulePost"><code><span class="http-method">post</span> /solve/{rule}</code></a></li>
+  </ul>
+
+  <h1><a name="Default">Default</a></h1>
+  <div class="method"><a name="solveRulePost"/>
+    <div class="method-path">
+    <a class="up" href="#__Methods">Up</a>
+    <pre class="post"><code class="huge"><span class="http-method">post</span> /solve/{rule}</code></pre></div>
+    <div class="method-summary">determines the winning bids and payments (<span class="nickname">solveRulePost</span>)</div>
+    <div class="method-notes"></div>
+
+    <h3 class="field-label">Path parameters</h3>
+    <div class="field-items">
+      <div class="param">rule (required)</div>
+
+      <div class="param-desc"><span class="param-type">Path Parameter</span> &mdash; <p>Pricing rule:</p>
+<ul>
+<li><code>Lindsay2018</code> - Shapley value based pricing as described by Lindsay (2018).</li>
+<li><code>VCG</code> - Vickrey-Clarke-Groves pricing.</li>
+<li><code>PaB</code> - Pay-as-bid pricing.</li>
+</ul>
+ </div>
+    </div>  <!-- field-items -->
+
+    <h3 class="field-label">Consumes</h3>
+    This API call consumes the following media types via the <span class="header">Content-Type</span> request header:
+    <ul>
+      <li><code>application/json</code></li>
+    </ul>
+
+    <h3 class="field-label">Request body</h3>
+    <div class="field-items">
+      <div class="param">Problem <a href="#Problem">Problem</a> (required)</div>
+
+      <div class="param-desc"><span class="param-type">Body Parameter</span> &mdash; Problem to solve </div>
+
+    </div>  <!-- field-items -->
+
+
+
+
+    <h3 class="field-label">Return type</h3>
+    <div class="return-type">
+      <a href="#Solution">Solution</a>
+      
+    </div>
+
+    <h3 class="field-label">Example data</h3>
+    <div class="example-data-content-type">Content-Type: application/json</div>
+    <pre class="example"><code>{
+  "problem" : {
+    "bidders" : [ {
+      "name" : "airline",
+      "bids" : [ {
+        "v" : 0,
+        "q" : {
+          "a" : 1
+        }
+      }, {
+        "v" : 0,
+        "q" : {
+          "b" : 1
+        }
+      } ]
+    }, {
+      "name" : "tourist",
+      "bids" : [ {
+        "v" : 90,
+        "q" : {
+          "a" : -1,
+          "b" : -1
+        }
+      } ]
+    }, {
+      "name" : "co-authors",
+      "bids" : [ {
+        "v" : 60,
+        "q" : {
+          "a" : -1
+        },
+        "xor_group" : 1
+      }, {
+        "v" : 60,
+        "q" : {
+          "b" : -1
+        },
+        "xor_group" : 1
+      } ]
+    } ]
+  },
+  "surplus" : 20.0,
+  "payments" : {
+     "seller" : -10,
+    "buyer h" : 10
+  },
+  "rule" : "Lindsay2018",
+  "surplusShares" : {
+    "seller" : 10,
+    "buyer h" : 30
+  }
+}</code></pre>
+
+    <h3 class="field-label">Produces</h3>
+    This API call produces the following media types according to the <span class="header">Accept</span> request header;
+    the media type will be conveyed by the <span class="header">Content-Type</span> response header.
+    <ul>
+      <li><code>application/json</code></li>
+    </ul>
+
+    <h3 class="field-label">Responses</h3>
+    <h4 class="field-label">200</h4>
+    solution with winning bids and surplus shares.
+        <a href="#Solution">Solution</a>
+    <h4 class="field-label">400</h4>
+    invalid input, object invalid
+        <a href="#"></a>
+  </div> <!-- method -->
+  <hr/>
+
+  <h2><a name="__Models">Models</a></h2>
+  [ Jump to <a href="#__Methods">Methods</a> ]
+
+  <h3>Table of Contents</h3>
+  <ol>
+    <li><a href="#Bid"><code>Bid</code> - </a></li>
+    <li><a href="#Bidder"><code>Bidder</code> - </a></li>
+    <li><a href="#Problem"><code>Problem</code> - </a></li>
+    <li><a href="#Solution"><code>Solution</code> - </a></li>
+  </ol>
+
+  <div class="model">
+    <h3><a name="Bid"><code>Bid</code> - </a> <a class="up" href="#__Models">Up</a></h3>
+    <div class='model-description'></div>
+    <div class="field-items">
+      <div class="param">v </div><div class="param-desc"><span class="param-type"><a href="#number">BigDecimal</a></span> The amount of money bid.  Positive values indicate paying money (buying) and negative values indicate receiving money (selling). </div>
+<div class="param">q </div><div class="param-desc"><span class="param-type"><a href="#number">map[String, BigDecimal]</a></span> A map specifying the items offered and/or demanded.  The map keys are the name of the good.  The map values are the quantities.  Positive values indicate giving (selling) and negative values indicate taking (buying). </div>
+          <div class="param-desc"><span class="param-type">example: {"a":1,"b":1}</span></div>
+<div class="param">xor_group (optional)</div><div class="param-desc"><span class="param-type"><a href="#string">String</a></span> Used for XOR bids.  Only one bid in each XOR group can be winning. </div>
+<div class="param">divisible (optional)</div><div class="param-desc"><span class="param-type"><a href="#boolean">Boolean</a></span> whether the bid can partially transact. </div>
+<div class="param">label (optional)</div><div class="param-desc"><span class="param-type"><a href="#string">String</a></span> Optional property used to aid interpreting the problem. </div>
+<div class="param">winning (optional)</div><div class="param-desc"><span class="param-type"><a href="#number">BigDecimal</a></span> Used after the market has been solved to indicate if the bid is winning.  If the property is present, then the bid is winning. </div>
+    </div>  <!-- field-items -->
+  </div>
+  <div class="model">
+    <h3><a name="Bidder"><code>Bidder</code> - </a> <a class="up" href="#__Models">Up</a></h3>
+    <div class='model-description'></div>
+    <div class="field-items">
+      <div class="param">id </div><div class="param-desc"><span class="param-type"><a href="#string">String</a></span>  </div>
+<div class="param">bids </div><div class="param-desc"><span class="param-type"><a href="#Bid">array[Bid]</a></span> An array of bids. </div>
+    </div>  <!-- field-items -->
+  </div>
+  <div class="model">
+    <h3><a name="Problem"><code>Problem</code> - </a> <a class="up" href="#__Models">Up</a></h3>
+    <div class='model-description'></div>
+    <div class="field-items">
+      <div class="param">bidders </div><div class="param-desc"><span class="param-type"><a href="#Bidder">array[Bidder]</a></span>  </div>
+<div class="param">description (optional)</div><div class="param-desc"><span class="param-type"><a href="#string">String</a></span>  </div>
+<div class="param">free_disposal (optional)</div><div class="param-desc"><span class="param-type"><a href="#boolean">Boolean</a></span>  </div>
+    </div>  <!-- field-items -->
+  </div>
+  <div class="model">
+    <h3><a name="Solution"><code>Solution</code> - </a> <a class="up" href="#__Models">Up</a></h3>
+    <div class='model-description'></div>
+    <div class="field-items">
+      <div class="param">rule </div><div class="param-desc"><span class="param-type"><a href="#string">String</a></span>  </div>
+          <div class="param-desc"><span class="param-type">example: Lindsay2018</span></div>
+<div class="param">surplus_shares (optional)</div><div class="param-desc"><span class="param-type"><a href="#number">map[String, BigDecimal]</a></span>  </div>
+          <div class="param-desc"><span class="param-type">example: {"seller":10,"buyer h":30}</span></div>
+<div class="param">payments </div><div class="param-desc"><span class="param-type"><a href="#number">map[String, BigDecimal]</a></span>  </div>
+<div class="param">surplus </div><div class="param-desc"><span class="param-type"><a href="#number">BigDecimal</a></span>  </div>
+          <div class="param-desc"><span class="param-type">example: 20.0</span></div>
+<div class="param">problem </div><div class="param-desc"><span class="param-type"><a href="#Problem">Problem</a></span>  </div>
+    </div>  <!-- field-items -->
+  </div>
+  </body>
+</html>

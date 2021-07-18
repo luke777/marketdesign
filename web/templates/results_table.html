@@ -1,0 +1,30 @@
+<div>
+    <h3>Results</h3>
+    <div>Pricing = {{solution.rule}}, total surplus = {{solution.surplus}}, sum of payments =
+        {{solution.sum_payments}}
+        {% if solution.prices %}
+        , prices {{solution.prices}}</span>.
+        {% endif %}
+    </div>
+    <table>
+        <tr>
+            <th></th>
+            <th>Bids</th>
+            <th>Surplus share</th>
+            <th>Payment</th>
+        </tr>
+        {% for bidder in solution.bidders %}
+        <tr>
+            <td>{{bidder.name}}</td>
+            <td>
+                {% for bid in bidder.bids %}<span {% if bid.winning %}class="winning"{% endif %}>{{bid.quantities}}{% if not loop.last %}, {% endif %}</span>{%
+                endfor %}
+            </td>
+            <td>{{bidder.surplus_share}}</td>
+            <td>{{bidder.payment}}</td>
+        </tr>
+        {% endfor %}
+
+    </table>
+    <div><small>Note: winning bids are underlined.</small></div>
+</div>

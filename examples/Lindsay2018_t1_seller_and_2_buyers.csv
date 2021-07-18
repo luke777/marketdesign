@@ -1,0 +1,4 @@
+name,xor_group,label,divisible,value,a
+seller,,seller's bid,,-10,1
+buyer L,,buyer L's bid,,22,-1
+buyer H,,buyer H's bid,,26,-1

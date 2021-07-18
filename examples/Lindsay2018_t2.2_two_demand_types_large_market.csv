@@ -1,0 +1,13 @@
+name,xor_group,label,divisible,value,a,b
+airline 1,1,,,0,1,1
+airline 1,1,,,0,1,
+airline 1,1,,,0,,1
+airline 2,1,,,0,1,1
+airline 2,1,,,0,1,
+airline 2,1,,,0,,1
+tourist 2,,,,90,-1,-1
+tourist 1,,,,90,-1,-1
+co-authors 1,1,,,60,-1,
+co-authors 1,1,,,60,,-1
+co-authors 2,1,,,60,-1,
+co-authors 2,1,,,60,,-1

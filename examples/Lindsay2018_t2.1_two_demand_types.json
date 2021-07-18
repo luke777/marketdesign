@@ -1,0 +1,43 @@
+{
+    "description": "From table 2 in Lindsay 2018",
+    "bidders": [{
+            "name": "airline",
+            "bids": [
+                {
+                    "v": 0,
+                    "q": {
+                        "a": 1
+                    }                 
+                },
+                {
+                    "v": 0,
+                    "q": {                         
+                        "b": 1
+                    }
+                }]
+        }, {
+            "name": "tourist",
+            "bids": [{
+                    "v": 90,
+                    "q": {
+                        "a": -1,
+                        "b": -1
+                    }
+                }]
+        }, {
+            "name": "co-authors",
+            "bids": [{
+                    "v": 60,
+                    "q": {
+                        "a": -1
+                    },
+                    "xor_group": 1
+                }, {
+                    "v": 60,
+                    "q": {
+                        "b": -1
+                    },
+                    "xor_group": 1
+                }]
+        }]            
+}

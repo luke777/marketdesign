@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+
+<html>
+    <head>
+        <title>Catchment market</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link rel="stylesheet" href="styles.css">
+    </head>
+    <body>
+        <div id="container">
+            <img src="background.svg" width="1000" height="562">
+            <div id="solveMarket"><button onclick="solveMarket()">Solve market </button></div>
+
+            <!-- Projects -->
+            <div id="seller1" class="project">Landowner 1
+                3ha woodland<br/>
+                Cost £40,000<br/>
+                Offsets <span class="quantity">3</span>kg P<br/>                
+                Bid: <input type="number"  min="0" step="1000"  value="40000"> </div>
+            <div id="seller2" class="project">Landowner 2<br/>
+                1ha wetland<br/>
+                Cost  £70,000<br/>
+                Offsets <span class="quantity">3</span>kg P<br/>                
+                Bid: <input type="number"  min="0" step="1000" value="70000"> 
+            </div>
+            <div id="buyer1" class="project">Developer 1<br/>
+                20 homes<br/>
+                Value £100,000<br/>
+                Produce <span class="quantity">2</span>kg P<br/>                
+                Bid: <input type="number"  min="0" step="1000"  value="100000"> 
+
+            </div>
+            <div id="buyer2" class="project">Developer 2<br/>
+                30 homes<br/>
+                Value £200,000<br/>
+                Produce <span class="quantity">3</span>kg P<br/>                
+                Bid: <input type="number"  min="0" step="1000"  value="200000"> 
+            </div>
+
+            <!-- Outcomes -->
+            <div  id="summary"><div id="summaryText"></div>
+                <div><button onclick="reset()">Reset</button></div>
+            </div>            
+
+            <div class="outcome" id="outcome1" data-bid="seller1"></div>            
+            <div class="outcome" id="outcome2" data-bid="seller2"></div>
+            <div class="outcome" id="outcome3" data-bid="buyer1"></div>
+            <div class="outcome" id="outcome4" data-bid="buyer2"></div>
+
+        </div> 
+
+        <script src="functions.js"></script> 
+    </body>
+</html>

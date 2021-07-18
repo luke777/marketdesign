@@ -1,0 +1,100 @@
+{
+    "bidders": [{
+            "name": "airline 1",
+            "bids": [{
+                        "v": 0,
+                        "q": {
+                            "a": 1,
+                            "b": 1
+                        },
+                        "xor_group":1
+                    },
+                    {
+                        "v": 0,
+                        "q": {
+                            "a": 1
+                        },
+                        "xor_group":1
+                    },
+                    {
+                        "v": 0,
+                        "q": {                         
+                            "b": 1
+                        },
+                        "xor_group":1
+                    }]
+        }, {
+            "name": "airline 2",
+            "bids": [{
+                        "v": 0,
+                        "q": {
+                            "a": 1,
+                            "b": 1
+                        },
+                        "xor_group":1
+                    },
+                    {
+                        "v": 0,
+                        "q": {
+                            "a": 1
+                        },
+                        "xor_group":1
+                    },
+                    {
+                        "v": 0,
+                        "q": {                         
+                            "b": 1
+                        },
+                        "xor_group":1
+                    }]
+        }, {
+            "name": "tourist 2",
+            "bids": [{
+                        "v": 90,
+                        "q": {
+                            "a": -1,
+                            "b": -1
+                        }
+                    }]
+        }, {
+            "name": "tourist 1",
+            "bids": [{
+                        "v": 90,
+                        "q": {
+                            "a": -1,
+                            "b": -1
+                        }
+                    }]
+        }, {
+            "name": "co-authors 1",
+            "bids": [{
+                        "v": 60,
+                        "q": {
+                            "a": -1
+                        },
+                        "xor_group":1
+                    }, {
+                        "v": 60,
+                        "q": {
+                            "b": -1
+                        },
+                        "xor_group":1
+                    }]
+        },
+        {
+            "name": "co-authors 2",
+            "bids": [{
+                        "v": 60,
+                        "q": {
+                            "a": -1
+                        },
+                        "xor_group":1
+                    }, {
+                        "v": 60,
+                        "q": {
+                            "b": -1
+                        },
+                        "xor_group":1
+                    }]
+        }]
+}

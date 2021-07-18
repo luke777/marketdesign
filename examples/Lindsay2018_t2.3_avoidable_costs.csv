@@ -1,0 +1,9 @@
+name,xor_group,label,divisible,value,seat
+small airline,1,,,-85,1
+small airline,1,,,-85,2
+large airline,1,,,-150,1
+large airline,1,,,-150,2
+large airline,1,,,-150,3
+traveler 1,,,,55,-1
+traveler 2,,,,60,-1
+traveler 3,,,,70,-1

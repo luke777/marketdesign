@@ -1,0 +1,7 @@
+name,xor_group,label,divisible,value,a,b
+seller,,,,-10,1,
+seller,,,,-12,,1
+buyer 1,1,,,13,-1,
+buyer 1,,,,15,,-1
+buyer 2,,,,20,-1,
+buyer 2,,,,21,,-1

@@ -1,0 +1,63 @@
+{
+    "bidders": [{
+            "name": "small airline",
+            "bids": [{
+                        "v": -85,
+                        "q": {
+                            "seat": 1
+                        },
+                        "xor_group":1
+                    }, {
+                        "v": -85,
+                        "q": {
+                            "seat": 2
+                        },
+                        "xor_group":1
+                    }]
+        }, {
+            "name": "large airline",
+            "bids": [{
+                        "v": -150,
+                        "q": {
+                            "seat": 1
+                        },
+                        "xor_group":1
+                    }, {
+                        "v": -150,
+                        "q": {
+                            "seat": 2
+                        },
+                        "xor_group":1
+                    }, {
+                        "v": -150,
+                        "q": {
+                            "seat": 3
+                        },
+                        "xor_group":1
+                    }]
+        }, {
+            "name": "traveler 1",
+            "bids": [{
+                        "v": 55,
+                        "q": {
+                            "seat": -1
+                        }
+                    }]
+        }, {
+            "name": "traveler 2",
+            "bids": [{
+                        "v": 60,
+                        "q": {
+                            "seat": -1
+                        }
+                    }]
+        }, {
+            "name": "traveler 3",
+            "bids": [{
+                        "v": 70,
+                        "q": {
+                            "seat": -1
+                        }
+                    }]
+        }]
+}

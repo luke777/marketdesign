@@ -1,0 +1,31 @@
+{
+    "description": "From table 1 in Lindsay 2018",
+    "bidders": [{
+            "name": "seller",            
+            "bids": [{
+                    "label": "seller's bid",
+                    "v": -10,
+                    "q": {
+                        "a": 1
+                    }                        
+                }]
+        }, {
+            "name": "buyer L",            
+            "bids": [{
+                    "label": "buyer L's bid",
+                    "v": 22,
+                    "q": {
+                        "a": -1
+                    }
+                }]
+        }, {
+            "name": "buyer H",
+            "bids": [{
+                    "label": "buyer H's bid",
+                    "v": 26,
+                    "q": {
+                        "a": -1
+                    }
+                }]
+        }]
+}

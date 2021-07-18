@@ -1,0 +1,5 @@
+Small airline: -85 1, -85 2
+Large airline: -150 1, -150 2, -150 3
+Traveler 1: 55 -1
+Traveler 2: 60 -1
+Traveler 3: 70 -1

@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+
+
+
+<html>
+    <head>
+        <title>Market solver web API</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    </head>
+    <body>
+        <div>Problem (input)</div>
+        <div><a href="apidoc/index.html">API documentation</a></div>
+        <textarea id="bids" rows="30" cols="80" >
+{
+    "description": "From table 2 in Lindsay 2018",
+    "bidders": [{
+            "name": "airline",
+            "bids": [
+                {
+                    "v": 0,
+                    "q": {
+                        "a": 1
+                    }
+                },
+                {
+                    "v": 0,
+                    "q": {
+                        "b": 1
+                    }
+                }]
+        }, {
+            "name": "tourist",
+            "bids": [{
+                    "v": 90,
+                    "q": {
+                        "a": -1,
+                        "b": -1
+                    }
+                }]
+        }, {
+            "name": "co-authors",
+            "bids": [{
+                    "v": 60,
+                    "q": {
+                        "a": -1
+                    },
+                    "xor_group": 1
+                }, {
+                    "v": 60,
+                    "q": {
+                        "b": -1
+                    },
+                    "xor_group": 1
+                }]
+        }]
+}
+
+        </textarea>
+        <div>
+            <label for="rules">Choose a payment rule:</label>
+
+            <select name="rules" id="rules">
+                <option value="lindsay2018">Lindsay (2018)</option>
+                <option value="vcg">VCG</option>
+                <option value="pab">Pay-as-bid</option>
+            </select>
+
+        </div>
+        <div><button onclick="myFunction()">Solve market</button></div>
+
+        <div>Solution (output)</div>
+        <pre id="response">
+        </pre>
+
+<script>
+function myFunction() {
+    var xmlhttp = new XMLHttpRequest();
+    var theUrl = "/solve/"+document.getElementById("rules").value;
+    xmlhttp.open("POST", theUrl);
+    xmlhttp.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
+    var nameValue = document.getElementById("bids").value;
+    xmlhttp.onload = function () {
+    if (xmlhttp.readyState === xmlhttp.DONE) {
+        if (xmlhttp.status === 200) {
+            document.getElementById("response").innerHTML = xmlhttp.response;
+        }
+        if (xmlhttp.status === 400) {
+            document.getElementById("response").innerHTML = xmlhttp.response;
+        }
+    }
+    };
+
+    xmlhttp.send(nameValue);
+}
+</script>
+    </body>
+</html>

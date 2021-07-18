@@ -1,0 +1,40 @@
+{
+    "bidders": [{
+            "name": "airline",
+            "bids": [{
+                        "v": 0,
+                        "q": {
+                            "a": 1
+                        }
+                    },{
+                        "v": 0,
+                        "q": {
+                            "a": 1
+                        }
+                    }]
+        }, {
+            "name": "couple",
+            "bids": [{
+                        "v": 2,
+                        "q": {
+                            "a": -2
+                        }
+                    }]
+        }, {
+            "name": "single traveler 1",
+            "bids": [{
+                        "v": 2,
+                        "q": {
+                            "a":-1
+                        }
+                    }]
+        }, {
+            "name": "single traveler 2",
+            "bids": [{
+                        "v": 2,
+                        "q": {
+                            "a":-1
+                        }
+                    }]
+        }]
+}

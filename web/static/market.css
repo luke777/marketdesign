@@ -1,0 +1,35 @@
+table, th, td {
+    border: 1px solid black;
+    border-collapse: collapse;
+}
+
+th, td {
+    padding: 15px;
+}
+
+pre {
+    background: lightgrey;
+    border: 1px solid grey;
+    padding: 5px;
+    width: 50ch;
+}
+
+div.instructions {
+    background: antiquewhite;
+    border: 1px solid grey;
+    padding: 5px;
+    margin: 5px;
+}
+
+div.market {
+    background: beige;
+    border: 1px solid grey;
+    padding: 5px;
+    margin: 5px;
+    margin-bottom: 50px;
+}
+
+span.winning{
+    font-weight: bold;
+    text-decoration: underline;
+}

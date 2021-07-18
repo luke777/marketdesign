@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <link rel="stylesheet" href="market.css">
+</head>
+<body>
+<div class="market">
+    {% if form.error %}
+    <div>
+        <p>Error parsing bids: {{ form.error }}</p>
+    </div>
+    {% endif %}
+
+    {% if solution %}
+    {% include 'results_table.html' %}
+    {% endif %}
+    <div class="container">
+        <h3>Market</h3>
+        <form method="POST">
+            <div>Bids</div>
+            <textarea name="bids" rows="10" cols="80">{{form.bids}}</textarea>
+            <br/>
+            <div>Pricing rule</div>
+            <input name="pricing" value="{{form.pricing}}"/>
+            <div><label>Free disposal: <input type="checkbox" name="free_disposal" {% if form.free_disposal%}checked{%
+                                              endif %}/></label></div>
+            <input type="submit" value="Submit">
+        </form>
+    </div>
+</div>
+<div class="instructions">
+    <h3>Instructions</h3>
+
+    <p>This page demonstrates the market mechanism described in <a href="https://doi.org/10.1016/j.geb.2017.10.020">Lindsay
+        (2018)</a>. A number of traders each submit one or more bids. The mechanism determines which bids are winning
+        and the payment for each trader.</p>
+    <p><b>Number of goods</b> is the number of different types of good being traded. Money is counted as one of the
+        goods. For example, in a market where apples and bananas are bought and sold using money, the number of goods
+        would be 3.</p>
+    <p><b>Bids</b> specify what each trader is offering. Each row is a different
+        trader.
+        An example of the syntax for the bids in a market with 3 goods
+        (say, money, apples and bananas) is as follows.
+    <pre>seller 1: -10 1 0, -15 1 1</pre>
+    First the trader's name is stated followed by a colon (:). This part is optional. If it is omitted generic names
+    will be generated. Then there is a list of bids. Each trader can submit several bids. XOR bids are bids are
+    separated by commas and OR bids by "|" symbols.
+    Each bid is a space-separated list of values. The number of values must match the previously specified number of
+    goods. Positive values indicate giving and negative ones taking.
+    The first entry is money and the remaining ones are the other goods. In this example, the first bid
+    <pre>-10 1 0</pre>
+    demands 10 cash and offers 1 apple and zero bananas.
+
+    The payment for a winning bid will never exceed the amount specified in the bid.
+    Each bid is considered a package. If the bid
+    is winning, for each good except money, the exact quantity specified in the
+    bid will be traded.
+    </p>
+
+    <p><b>Pricing rule</b> specifies how the payments for winning bids will be determined. The options are "<b>lindsay2018</b>"
+        (Shapley value based pricing as described by Lindsay (2018)), "<b>vcg</b>" (Vickrey–Clarke–Groves) and
+        "<b>pab</b>" (pay-as-bid).</p>
+    <p><b>Free disposal</b> indicates whether unwanted goods can be freely discarded when determining the winning bids.
+        Whether this is appropriate will depend on the context, e.g. disposing of oil is costly but leaving a train seat
+        empty is not.</p>
+
+    <h3>Examples</h3>
+    Some examples discussed in <a href="https://doi.org/10.1016/j.geb.2017.10.020">Lindsay (2018)</a> are shown below.
+    To run them, copy and paste the bids into the form and set the appropriate number of goods.
+    <h4>Buyer and seller (2 goods)</h4>
+    <pre>Seller: -10 1
+Buyer L: 22 -1
+Buyer H: 26 -1</pre>
+
+    <h4>Two demand types and no competitive equilibrium</h4>
+    <pre>Airline: 0 1 1, 0 1 0, 0 0 1
+Tourist: 90 -1 -1
+Co-authors: 60 -1 0, 60 0 -1</pre>
+
+    <h4>Avoidable fixed costs and empty core</h4>
+    <pre>
+Small airline: -85 1, -85 2
+Large airline: -150 1, -150 2, -150 3
+Traveler 1: 55 -1
+Traveler 2: 60 -1
+Traveler 3: 70 -1    
+</pre>
+
+
+    <h4>Low VCG revenue with 3 buyers</h4>
+    <pre>
+Airline: 0 1, 0 2
+Couple: 2 -2
+Single traveler 1: 2 -1
+Single traveler 2: 2 -1     
+</pre>
+
+    <p> Other examples</p>
+
+    <h4>Diamond market</h4>
+    <p>The diamond cutter converts rough diamonds into polished diamonds.</p>
+    <pre>
+Diamond miner 1: -20 1 0
+Diamond miner 2: -40 1 0
+Diamond miner 3: -60 1 0
+Diamond cutter: -3 -2 1, -5 -3 2
+Jeweller 1: 50 0 -1
+Jeweller 2: 60 0 -1
+Jeweller 3: 70 0 -1
+</pre>
+</div>
+
+
+</body>
+</html>

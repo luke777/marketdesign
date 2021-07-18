@@ -1,6 +1,6 @@
 # Market Design
 
-This project is a python implementation the market mechanism described in the paper
+This project is a python implementation of the market mechanism described in the paper
 ["Shapley value based pricing for auctions and exchanges" (Lindsay 2018)](https://doi.org/10.1016/j.geb.2017.10.020).
 
 
@@ -37,7 +37,7 @@ to be easily prepared and analyzed using most programming languages.
 
 By default, the results of solving the market are shown onscreen.  The output can 
 be directed to a file as follows. \
-`py .\solver.py .\examples\Lindsay2018_t2.1_two_demand_types.csv -o output.json` \
+`py solver.py examples\Lindsay2018_t2.1_two_demand_types.csv -o output.json` \
 The format of the output is determined by the filename extension.  As with inputs, 
 the supported formats are text (.txt), csv, and json.
 
@@ -45,15 +45,15 @@ the supported formats are text (.txt), csv, and json.
 The program `web-solver.py` starts a micro web service that allows the 
 market solver to be accessed online.
 
-If the python virtual environment is not already activated, run.
+If the python virtual environment is not already activated, activate it with
 `env\Scripts\activate` \
-Then start the service using. \
-`py web-solver.py` \
+Then start the service with \
+`py web-solver.py` 
 
 Opening `http://localhost:5000` in a browser should display links to the following. 
 - A form for submitting bids in text format.
 - A form for uploading a file with bids in cvs format.
 - A form for submitting bids in json format.
-- An example of graphical interface that lets users experiment 
+- An example of a graphical interface that lets users experiment 
 with different bids.  The bids are captured using javascript
 and sent to the server in json format.

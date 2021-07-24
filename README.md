@@ -1,11 +1,12 @@
 # Market Design
 
 This project is a python implementation of the market mechanism described in the paper
-["Shapley value based pricing for auctions and exchanges" (Lindsay 2018)](https://doi.org/10.1016/j.geb.2017.10.020).
+["Shapley value based pricing for auctions and exchanges" (Lindsay 2018)](https://doi.org/10.1016/j.geb.2017.10.020).  The project uses a [bidding language](docs/bidding_language.md) that extends the version in the
+paper to allow bidders to express their preferences more concisely.
 
 
 # Installing on Windows
-Install git and Python 3.x if not already installed.
+Install [git](https://git-scm.com/downloads) and [Python 3.x](https://www.python.org/downloads/) if not already installed.
 
 Get a copy of the project. \
 `git clone https://github.com/luke777/marketdesign.git` \
@@ -30,12 +31,12 @@ The solver can then be run.
 Three file formats are supported.
 The directory `examples` contains examples of each of the formats.  The cases are taken from Lindsay 2018.
 
-- **Text**  This format is the most concise.  Bids are specified in a text file
+- **[Text](doc/txt_bids.md)**  This format is the most concise.  Bids are specified in a text file
 with one line per bidder.
 
-- **CSV** This format is convenient if bids are prepared in a spreadsheet.
+- **[CSV](docs/csv_bids.md)** This format is convenient if bids are prepared in a spreadsheet.
 
-- **JSON**  This format is relatively more verbose but allows bids 
+- **[JSON](web/static/apidoc/index.html)**  This format is relatively more verbose but allows bids 
 to be easily prepared and analyzed using most programming languages.
 
 By default, the results of solving the market are shown onscreen.  The output can 

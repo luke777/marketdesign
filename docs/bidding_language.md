@@ -22,6 +22,6 @@ and some can be independent (OR bids).  For example, suppose a bidder would like
 snack of either an apple or a banana but not both.  They would submit two bids with the same
  "XOR group".  This adds the restriction that at most one of the two bids can transact. 
 
-##Labels
+##  Labels
 The bidding language allows a _label_ to be attached to each bid.  The label does not 
 affect the outcome of the market.  Its sole purpose to aid interpretation of the results.

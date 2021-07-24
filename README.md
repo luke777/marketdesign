@@ -31,12 +31,12 @@ The solver can then be run.
 Three file formats are supported.
 The directory `examples` contains examples of each of the formats.  The cases are taken from Lindsay 2018.
 
-- **[Text](doc/txt_bids.md)**  This format is the most concise.  Bids are specified in a text file
+- **[Text](docs/txt_bids.md)**  This format is the most concise.  Bids are specified in a text file
 with one line per bidder.
 
 - **[CSV](docs/csv_bids.md)** This format is convenient if bids are prepared in a spreadsheet.
 
-- **[JSON](web/static/apidoc/index.html)**  This format is relatively more verbose but allows bids 
+- **[JSON](https://luke777.github.io/marketdesign/web/static/apidoc/index.html)**  This format is relatively more verbose but allows bids 
 to be easily prepared and analyzed using most programming languages.
 
 By default, the results of solving the market are shown onscreen.  The output can 

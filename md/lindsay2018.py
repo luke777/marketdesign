@@ -23,15 +23,16 @@ class Lindsay2018(PaymentRule):
         permutations = []
         rnd = Random(self.seed)
         if math.factorial(len(winners)) > self.max_perms_to_generate:
-            for i in range(self.max_perms_to_generate):
+            for i in range(self.max_perms_to_consider):
                 perm = copy(winners)
                 rnd.shuffle(perm)
                 permutations.append(perm)
         else:
             permutations = list(itertools.permutations(winners))
-            if len(permutations) > self.max_perms_to_consider:
-                rnd.shuffle(permutations)
-                permutations = permutations[0:self.max_perms_to_consider]
+
+        if len(permutations) > self.max_perms_to_consider:
+            rnd.shuffle(permutations)
+            permutations = permutations[0:self.max_perms_to_consider]
 
         # Stores running sum of shares for each winner.
         shares_sums = defaultdict(lambda: 0)
@@ -41,6 +42,8 @@ class Lindsay2018(PaymentRule):
 
         problem = copy(sol.problem)
         auction = Auction()
+        n_perms = len(permutations)
+        print('There are {} permutations'.format(n_perms))
         for perm in permutations:
             last_surplus = 0
             problem.bidders = [sol.problem.bidders[i] for i in losers]
@@ -58,7 +61,7 @@ class Lindsay2018(PaymentRule):
                 shares_sums[i] = shares_sums[i] + share
                 last_surplus = surplus
 
-        n_perms = len(permutations)
+
         for i in winners:
             surplus_share = shares_sums[i] / n_perms
             sol.populate_surplus_and_payment(sol.problem.bidders[i], surplus_share)

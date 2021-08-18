@@ -76,7 +76,6 @@ def build_result(solution):
             bid_str += ']'
             winning = bid.winning > 0
             bids.append({'quantities': bid_str, 'winning': winning})
-            print(bid_str)
             bidder_model = {'name': bidder.name, 'bids': bids}
             if bidder.name in solution.surplus_shares.keys():
                 bidder_model['surplus_share'] = solution.surplus_shares[bidder.name]

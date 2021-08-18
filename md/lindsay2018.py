@@ -3,7 +3,7 @@ import math
 from random import Random
 import itertools
 from collections import defaultdict
-
+import time
 
 # Implementation of the payment rule described in the paper "Shapley value based pricing for auctions and exchanges"
 # https://doi.org/10.1016/j.geb.2017.10.020
@@ -16,6 +16,10 @@ class Lindsay2018(PaymentRule):
         self.seed = seed
 
     def calc_surplus_shares(self, sol: Solution):
+
+        #Used to give progress updates for slow problems.
+        start_time = time.time()
+        last_time = start_time
 
         winners = sol.winner_indexes()
         losers = sol.loser_indexes()
@@ -43,8 +47,12 @@ class Lindsay2018(PaymentRule):
         problem = copy(sol.problem)
         auction = Auction()
         n_perms = len(permutations)
-        print('There are {} permutations'.format(n_perms))
-        for perm in permutations:
+
+        for j, perm in enumerate(permutations):
+            current_time = time.time()
+            if current_time > last_time + 10:
+                last_time = current_time
+                print('Permutation {} of {}'.format(j, n_perms))
             last_surplus = 0
             problem.bidders = [sol.problem.bidders[i] for i in losers]
             for position, i in enumerate(perm):
@@ -67,6 +75,12 @@ class Lindsay2018(PaymentRule):
             sol.populate_surplus_and_payment(sol.problem.bidders[i], surplus_share)
 
         sol.rule = 'lindsay2018'
+        current_time = time.time()
+        if current_time > start_time + 10:
+            n_winners = len(winners)
+            n_bidders = n_winners + len(losers)
+            solve_time = round(current_time-start_time)
+            print('{} bidders and {} winners.  Calculating prices took {} seconds with {} permutations.'.format(n_bidders, n_winners,solve_time, n_perms))
 
 
 def get_rule(rule_name):

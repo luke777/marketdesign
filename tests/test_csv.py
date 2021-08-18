@@ -20,4 +20,7 @@ class CsvTest(unittest.TestCase):
 
         si = StringIO()
         encode_csv_solution(sol, si)
-        print(si.getvalue())
+        csv_str = si.getvalue()
+        rows = csv_str.splitlines()
+        # Should be 7 rows, 1 header + 2 for each bidder
+        self.assertEqual(7, len(rows))

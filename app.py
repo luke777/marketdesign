@@ -1,35 +1,80 @@
-from flask import Flask, request, render_template, make_response
+import concurrent
+
+from flask import Flask, request, render_template, make_response, redirect, url_for, Response
 from flask_cors import cross_origin
 from md.auction_txt import parse_bidders
 from md.lindsay2018 import *
 from md.auction_json import *
 from md.auction_csv import *
 import json
-import csv
+import uuid
 from io import StringIO
+from flask_executor import Executor
 
 app = Flask(__name__, static_folder='web/static',
             static_url_path='',
             template_folder='web/templates')
 
+app.config['EXECUTOR_MAX_WORKERS'] = 5
+executor = Executor(app)
 
 @app.route('/')
 def index():
-    return """<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Market solver</title>
-</head>
-<body>
- <ul>
-  <li><a href="txt">Form for .txt bids</a></li>
-  <li><a href="upload">Upload .csv bids</a></li>
-  <li><a href="jsonapi.html">Form for .json bids</a></li>
-  <li><a href="catchment/example1.html">GUI demo</a></li>
-</ul>
-</body>
-</html>"""
+    return render_template('index.html')
+
+
+def my_solve(problem, rule, form):
+    auction = Auction()
+    solution = auction.winner_determination(problem)
+    rule.calc_surplus_shares(solution)
+    return solution, form
+
+# Pushes Server-Sent Events (SSE) to the browser about the status of a posted problem.
+# Updates are sent every 20 seconds to keep the connection alive.
+# 'Done' is sent when the problem has been solved.  See template 'wait.hml' for
+# javascript that initiates a connection and processes the events.
+@app.route('/listen')
+def listen():
+    uid = request.args.get("uid")
+
+    def eventStream():
+        yield 'data: {}\n\n'.format('Calculating..')
+        result = None
+        while result is None:
+            try:
+                result = executor.futures.result(uid, timeout=20)
+                yield 'data: {}\n\n'.format('Done')
+            except concurrent.futures._base.TimeoutError:
+                yield 'data: {}\n\n'.format('Calculating...')
+
+    return Response(eventStream(), mimetype="text/event-stream")
+
+
+@app.route('/get-result')
+def get_result():
+    uid = request.args.get("uid")
+    output_format = request.args.get("format")
+
+    if not executor.futures._state(uid):
+        return "No such element {}".format(uid)
+    if not executor.futures.done(uid):
+        return render_template('wait.html', uid=uid)
+    future = executor.futures.pop(uid)
+    solution, form = future.result()
+
+    if output_format == 'txt':
+        result = build_result(solution)
+        return render_template('market.html', form=form, solution=result)
+    elif output_format == 'csv':
+        si = StringIO()
+        encode_csv_solution(solution, si)
+        output = make_response(si.getvalue())
+        output.headers["Content-Disposition"] = "attachment; filename=results.csv"
+        output.headers["Content-type"] = "text/csv"
+        return output
+    else:
+        return "Unknown format {}".format(output_format)
+
 
 @app.route('/txt', methods=['POST', 'GET'])
 def txt_bids():
@@ -47,10 +92,10 @@ def txt_bids():
             bidders = parse_bidders(form['bids'])
             rule = get_rule(form['pricing'])
             problem = Problem(bidders=bidders, free_disposal=form['free_disposal'])
-            auction = Auction()
-            solution = auction.winner_determination(problem)
-            rule.calc_surplus_shares(solution)
-            result = build_result(solution)
+            uid = uuid.uuid4().hex
+            executor.submit_stored(uid, my_solve, problem, rule, form)
+            return redirect(url_for('get_result', uid=uid, format='txt'))
+
         except ValueError as err:
             form['error'] = err
 
@@ -87,7 +132,7 @@ def build_result(solution):
 
 @app.route("/solve/<rule_name>", methods=['POST'])
 @cross_origin()
-def solve(rule_name):
+def solve_json(rule_name):
     dct = request.json
     problem = decode_problem(dct)
     auction = Auction()
@@ -113,17 +158,10 @@ def upload_csv():
             reader = file2reader(f)
             bidders = decode_csv_bidders(reader)
             problem = Problem(bidders=bidders)
-            auction = Auction()
-            solution = auction.winner_determination(problem)
-            rule.calc_surplus_shares(solution)
 
-            # return csv..
-            si = StringIO()
-            encode_csv_solution(solution, si)
-            output = make_response(si.getvalue())
-            output.headers["Content-Disposition"] = "attachment; filename=results.csv"
-            output.headers["Content-type"] = "text/csv"
-            return output
+            uid = uuid.uuid4().hex
+            executor.submit_stored(uid, my_solve, problem, rule, form)
+            return redirect(url_for('get_result', uid=uid, format='csv'))
         except Exception as err:
             print(err)
             form['error'] = err

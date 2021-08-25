@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Calculating..</title>
+</head>
+<body>
+<div id="status">Calculating..</div>
+</body>
+<script>
+    const div = document.getElementById("status");
+    const eventSource = new EventSource("/listen?uid={{uid}}");
+    eventSource.onmessage = function (e) {
+        div.innerHTML = e.data;
+        if (e.data==="Done"){
+            document.title = "Calculation complete";
+            eventSource.close();
+            location.reload();
+        }
+    };
+</script>
+</html>

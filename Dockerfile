@@ -9,8 +9,6 @@ COPY web web
 
 RUN pip install --no-cache-dir -r /app/requirements.txt
 
-ENTRYPOINT [ "python" ]
-
 EXPOSE 5000
 
-CMD [ "web-solver.py" ]
+CMD ["gunicorn", "app:app", "-b", "0.0.0.0:5000", "-w", "1", "--threads",  "12"]

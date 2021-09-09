@@ -1,23 +1,21 @@
 img {
-    border: 2px solid black;   
+    border: 2px solid black;
 }
 
-input{
+input {
     width: 6em;
 }
 
 body {
-  font-family: Sans-Serif;
+    font-family: Sans-Serif;
 }
 
 #container {
-    position: relative;    
+    position: relative;
 }
 
-#solveMarket{
+#solveMarket {
     position: absolute;
-    left: 450px;
-    top: 300px;
 }
 
 button {
@@ -30,75 +28,33 @@ button {
 
 div.project {
     position: absolute;
-    width: 120px; 
+    width: 120px;
     padding: 5px;
     color: white;
     border: 2px solid grey;
 }
 
-#seller1{  
-    left: 30px;
-    top: 155px;
-    background-color: green;
-}
 
-#seller2{
-    left: 30px;
-    top: 310px;
-    background-color: dodgerblue;
-}
-
-#buyer1{   
-    left: 800px;
-    top: 150px;
-    background-color: darkorange;
-}
-
-#buyer2{
-    left: 830px;
-    top: 350px;
-    background-color: darkred;
-}
-
-div.outcome{
+div.outcome {
     position: absolute;
     display: none;
-    width: 170px; 
+    width: 170px;
     padding: 5px;
     color: black;
-    background-color:white;
+    background-color: white;
     opacity: 0.7;
-    border: 2px solid grey; 
+    border: 2px solid grey;
 }
 
-#summary{
-    left: 450px;
-    top: 250px;
+#summary {
     position: absolute;
     display: none;
-    width: 150px; 
+    width: 150px;
     padding: 5px;
     color: black;
-    background-color:white;
+    background-color: white;
     opacity: 0.7;
-    border: 2px solid grey; 
+    border: 2px solid grey;
     font-size: 16px;
 }
 
-#outcome1{  
-    left: 20px;
-    top: 60px;
-}
-
-#outcome2{  
-    left: 20px;
-    top: 445px;
-}
-#outcome3{  
-    left: 651px;
-    top: 44px;
-}
-#outcome4{  
-    left: 784px;
-    top: 475px;
-}

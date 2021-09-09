@@ -1,7 +1,8 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
     <link rel="stylesheet" href="market.css">
+    <title>Market solver: txt format</title>
 </head>
 <body>
 <div class="market">
@@ -40,7 +41,7 @@
     <p><b>Bids</b> specify what each trader is offering. Each row is a different
         trader.
         An example of the syntax for the bids in a market with 3 goods
-        (say, money, apples and bananas) is as follows.
+        (say, money, apples and bananas) is as follows.</p>
     <pre>seller 1: -10 1 0, -15 1 1</pre>
     First the trader's name is stated followed by a colon (:). This part is optional. If it is omitted generic names
     will be generated. Then there is a list of bids. Each trader can submit several bids. XOR bids are bids are
@@ -51,7 +52,7 @@
     <pre>-10 1 0</pre>
     demands 10 cash and offers 1 apple and zero bananas.
 
-    The payment for a winning bid will never exceed the amount specified in the bid.
+    <p>The payment for a winning bid will never exceed the amount specified in the bid.
     Each bid is considered a package. If the bid
     is winning, for each good except money, the exact quantity specified in the
     bid will be traded.

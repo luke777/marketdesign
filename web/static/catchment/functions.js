@@ -3,20 +3,21 @@ function isSeller(id) {
 }
 
 function buildMsg() {
-    var projects = document.getElementsByClassName("project");
-    msg = {bidders: []};
-    for (var j = 0; j < projects.length; j++) {
-        var q = Number(projects[j].getElementsByClassName("quantity")[0].innerText);
+    const projects = document.getElementsByClassName("project");
+    const msg = {bidders: []};
+
+    for (let j = 0; j < projects.length; j++) {
+        let q = Number(projects[j].getElementsByClassName("quantity")[0].innerText);
         const input = projects[j].getElementsByTagName("input")[0];
         const id = projects[j].id;
-        p = Number(input.value);
-        if (p > 0 & q > 0) {
+        let p = Number(input.value);
+        if (p > 0 && q > 0) {
             if (isSeller(id)) {
                 p = -p;
             } else {
                 q = -q;
             }
-            bidder = {"name": id, "bids": [{v: p, q: {P: q}}]};
+            let bidder = {"name": id, "bids": [{v: p, q: {P: q}}]};
             msg.bidders.push(bidder);
         }
 
@@ -28,15 +29,14 @@ function displayOutcome(result) {
 
     const fmt = new Intl.NumberFormat('en-EN', {style: 'currency', currency: 'GBP'});
 
-    const summary = document.getElementById("summary");
     const surplus = fmt.format(result.surplus);
     const nWinners = Object.keys(result.payments).length;
     document.getElementById("summaryText").innerHTML = `${nWinners} winning bidders, total surplus is ${surplus}`;
 
 
-    var outcomes = document.getElementsByClassName("outcome");
-    var id2outcome = {};
-    for (var j = 0; j < outcomes.length; j++) {
+    const outcomes = document.getElementsByClassName("outcome");
+    const id2outcome = {};
+    for (let j = 0; j < outcomes.length; j++) {
         const id = outcomes[j].dataset.bid;
         id2outcome[id] = outcomes[j];
     }
@@ -66,7 +66,7 @@ function displayOutcome(result) {
         delete id2outcome[id];
     });
 
-    for (var key in id2outcome) {
+    for (let key in id2outcome) {
         if (id2outcome.hasOwnProperty(key)) {
             id2outcome[key].innerHTML = "Did not bid";
         }
@@ -77,24 +77,24 @@ function displayOutcome(result) {
 function solveMarket() {
 
     const msg = buildMsg();
-    var xmlhttp = new XMLHttpRequest();
-    var theUrl = "/solve/lindsay2018";
-    xmlhttp.open("POST", theUrl);
-    xmlhttp.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
+    const xmlHttp = new XMLHttpRequest();
+    const url = "/solve/lindsay2018";
+    xmlHttp.open("POST", url);
+    xmlHttp.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
 
-    xmlhttp.onload = function () {
-        if (xmlhttp.readyState === xmlhttp.DONE) {
-            if (xmlhttp.status === 200) {
-                var result = JSON.parse(xmlhttp.response);
+    xmlHttp.onload = function () {
+        if (xmlHttp.readyState === xmlHttp.DONE) {
+            if (xmlHttp.status === 200) {
+                var result = JSON.parse(xmlHttp.response);
                 displayOutcome(result);
             }
-            if (xmlhttp.status === 400) {
-                console.log(xmlhttp.response);
+            if (xmlHttp.status === 400) {
+                console.log(xmlHttp.response);
             }
         }
     };
 
-    xmlhttp.send(JSON.stringify(msg));
+    xmlHttp.send(JSON.stringify(msg));
 }
 
 function reset() {
@@ -102,19 +102,17 @@ function reset() {
 }
 
 function showSolution(showSolution) {
-    var solDisplay = showSolution ? "block" : "none";
-    var bidDisplay = showSolution ? "none" : "block";
-
-    document.getElementById("solveMarket").style.display = bidDisplay;
+    const solDisplay = showSolution ? "block" : "none";
+    document.getElementById("solveMarket").style.display = showSolution ? "none" : "block";
     document.getElementById("summary").style.display = solDisplay;
 
-    var outcomes = document.getElementsByClassName("outcome");
-    for (var j = 0; j < outcomes.length; j++) {
+    const outcomes = document.getElementsByClassName("outcome");
+    for (let j = 0; j < outcomes.length; j++) {
         outcomes[j].style.display = solDisplay;
     }
 
-    var inputs = document.getElementsByTagName("input");
-    for (var j = 0; j < inputs.length; j++) {
+    const inputs = document.getElementsByTagName("input");
+    for (let j = 0; j < inputs.length; j++) {
         inputs[j].disabled = showSolution;
     }
 }

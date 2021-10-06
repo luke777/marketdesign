@@ -44,7 +44,7 @@
         (say, money, apples and bananas) is as follows.</p>
     <pre>seller 1: -10 1 0, -15 1 1</pre>
     First the trader's name is stated followed by a colon (:). This part is optional. If it is omitted generic names
-    will be generated. Then there is a list of bids. Each trader can submit several bids. XOR bids are bids are
+    will be generated. Then there is a list of bids. Each trader can submit several bids. XOR bids are
     separated by commas and OR bids by "|" symbols.
     Each bid is a space-separated list of values. The number of values must match the previously specified number of
     goods. Positive values indicate giving and negative ones taking.
@@ -53,10 +53,12 @@
     demands 10 cash and offers 1 apple and zero bananas.
 
     <p>The payment for a winning bid will never exceed the amount specified in the bid.
-    Each bid is considered a package. If the bid
+    By default, each bid is treated as an indivisible package. If the bid
     is winning, for each good except money, the exact quantity specified in the
-    bid will be traded.
+    bid will be traded.  However, bids can be declared as divisible by preceding the list of values with a "d", e.g:
     </p>
+    <pre>seller: d -20 2 0</pre>
+    <p>In this case, the seller is offering two units for 20, but since the bid is divisible, would accept 10 for one unit or 5 for half a unit.</p>
 
     <p><b>Pricing rule</b> specifies how the payments for winning bids will be determined. The options are "<b>lindsay2018</b>"
         (Shapley value based pricing as described by Lindsay (2018)), "<b>vcg</b>" (Vickrey–Clarke–Groves) and
@@ -84,7 +86,7 @@ Small airline: -85 1, -85 2
 Large airline: -150 1, -150 2, -150 3
 Traveler 1: 55 -1
 Traveler 2: 60 -1
-Traveler 3: 70 -1    
+Traveler 3: 70 -1
 </pre>
 
 
@@ -93,7 +95,7 @@ Traveler 3: 70 -1
 Airline: 0 1, 0 2
 Couple: 2 -2
 Single traveler 1: 2 -1
-Single traveler 2: 2 -1     
+Single traveler 2: 2 -1
 </pre>
 
     <p> Other examples</p>

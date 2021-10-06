@@ -113,13 +113,18 @@ def build_result(solution):
         bids = []
         model['sum_payments'] += solution.payments.get(bidder.name, 0)
         for bid in bidder.bids:
-            bid_str = '['
+            winning = bid.winning > 0
+            bid_str = ''
+            if bid.winning < 1 and winning:
+                # Bid is partially winning.
+                bid_str += str(bid.winning)
+            bid_str += '['
             bid_str += str(bid.v)
             for good in goods:
                 bid_str += ', '
                 bid_str += str(bid.q.get(good, 0))
             bid_str += ']'
-            winning = bid.winning > 0
+
             bids.append({'quantities': bid_str, 'winning': winning})
             bidder_model = {'name': bidder.name, 'bids': bids}
             if bidder.name in solution.surplus_shares.keys():

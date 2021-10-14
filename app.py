@@ -72,6 +72,12 @@ def get_result():
         output.headers["Content-Disposition"] = "attachment; filename=results.csv"
         output.headers["Content-type"] = "text/csv"
         return output
+    elif output_format == 'json':
+        json_str = json.dumps(solution, indent=4, cls=ObjectEncoder)
+        output = make_response(json_str)
+        output.headers["Content-Disposition"] = "attachment; filename=results.json"
+        output.headers["Content-type"] = "text/json"
+        return output
     else:
         return "Unknown format {}".format(output_format)
 
@@ -148,11 +154,12 @@ def solve_json(rule_name):
     return json_str
 
 
-@app.route('/upload', methods=['POST', 'GET'])
-def upload_csv():
+@app.route('/upload/<file_format>', methods=['POST', 'GET'])
+def upload_file(file_format):
     result = None
     form = {'error': None,
             'free_disposal': True,
+            'format': file_format,
             'pricing': 'lindsay2018'}
     if request.method == 'POST':
         form['pricing'] = request.form['pricing']
@@ -160,13 +167,19 @@ def upload_csv():
         try:
             rule = get_rule(form['pricing'])
             f = request.files['fileupload']
-            reader = file2reader(f)
-            bidders = decode_csv_bidders(reader)
-            problem = Problem(bidders=bidders)
+            if file_format == 'csv':
+                reader = file2reader(f)
+                bidders = decode_csv_bidders(reader)
+                problem = Problem(bidders=bidders,free_disposal=form['free_disposal'])
+            elif file_format == 'json':
+                dct = json.load(f)
+                problem = decode_problem(dct)
+            else:
+                raise ValueError(file_format)
 
             uid = uuid.uuid4().hex
             executor.submit_stored(uid, my_solve, problem, rule, form)
-            return redirect(url_for('get_result', uid=uid, format='csv'))
+            return redirect(url_for('get_result', uid=uid, format=file_format))
         except Exception as err:
             print(err)
             form['error'] = err

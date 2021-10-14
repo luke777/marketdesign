@@ -6,22 +6,22 @@
     <link rel="stylesheet" href="market.css">
 </head>
 <body>
- {% if form.error %}
+{% if form.error %}
     <div>
         <p>Error reading csv file: {{ form.error }}</p>
     </div>
-    {% endif %}
-<form action="upload" method="post" enctype="multipart/form-data">
+{% endif %}
+<form action="/upload/{{ form.format }}" method="post" enctype="multipart/form-data">
 
     <div>Pricing rule</div>
-    <input name="pricing" value="{{form.pricing}}"/>
-    <div><label>Free disposal: <input type="checkbox" name="free_disposal" {% if form.free_disposal%}checked{%
-                                      endif %}/></label></div>
-     <input type="file" name="fileupload" id="fileToUpload" accept=".csv">
+    <input name="pricing" value="{{ form.pricing }}"/>
+
+    {% if form.format == 'csv' %}
+        <div><label>Free disposal: <input type="checkbox" name="free_disposal"
+                                          {% if form.free_disposal %}checked{% endif %}/></label></div>
+    {% endif %}
+    <input type="file" name="fileupload" id="fileToUpload" accept=".{{ form.format }}">
     <input type="submit" value="Upload File" name="submit">
 </form>
-{% if solution %}
-{% include 'results_table.html' %}
-{% endif %}
 </body>
 </html>

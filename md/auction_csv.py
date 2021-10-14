@@ -25,7 +25,8 @@ def decode_csv_bid(dct, goods):
             if s:
                 q[good] = to_number(s)
     v = to_number(dct['value'])
-    return Bid(v, q, label=dct['label'], xor_group=dct['xor_group'])
+    divisible = dct['divisible'] == '1'
+    return Bid(v, q, label=dct['label'], xor_group=dct['xor_group'], divisible=divisible)
 
 
 def decode_csv_bidders(reader: csv.DictReader):

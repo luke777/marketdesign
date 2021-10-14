@@ -10,10 +10,12 @@ class ObjectEncoder(JSONEncoder):
 
 
 def decode_bid(dct):
-    for k in ['label', 'winning', 'xor_group']:
+    for k in ['label', 'winning', 'xor_group', 'divisible']:
         if k not in dct:
             dct[k] = None
-    return Bid(dct['v'], dct['q'], label=dct['label'], winning=dct['winning'], xor_group=dct['xor_group'])
+    divisible = dct['divisible'] == True
+    return Bid(dct['v'], dct['q'], label=dct['label'], winning=dct['winning'], xor_group=dct['xor_group'],
+               divisible=divisible)
 
 
 def decode_bidder(dct):

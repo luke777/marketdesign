@@ -83,10 +83,10 @@ class Lindsay2018(PaymentRule):
             print('{} bidders and {} winners.  Calculating prices took {} seconds with {} permutations.'.format(n_bidders, n_winners,solve_time, n_perms))
 
 
-def get_rule(rule_name):
+def get_rule(rule_name,  max_perms_to_consider: int = 1024):
     rule_name = rule_name.lower().strip()  # ignore case
     if rule_name == 'lindsay2018':
-        rule = Lindsay2018()
+        rule = Lindsay2018(max_perms_to_consider=max_perms_to_consider)
     elif rule_name == 'vcg':
         rule = VCG()
     elif rule_name == 'pab':

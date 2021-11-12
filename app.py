@@ -18,6 +18,8 @@ app = Flask(__name__, static_folder='web/static',
 app.config['EXECUTOR_MAX_WORKERS'] = 5
 executor = Executor(app)
 
+max_perms_to_consider = int(os.environ.get('MAX_PERMS_TO_CONSIDER', '1024'))
+
 @app.route('/')
 def index():
     return render_template('index.html')
@@ -96,7 +98,7 @@ def txt_bids():
 
         try:
             bidders = parse_bidders(form['bids'])
-            rule = get_rule(form['pricing'])
+            rule = get_rule(form['pricing'], max_perms_to_consider=max_perms_to_consider)
             problem = Problem(bidders=bidders, free_disposal=form['free_disposal'])
             uid = uuid.uuid4().hex
             executor.submit_stored(uid, my_solve, problem, rule, form)
@@ -165,7 +167,7 @@ def upload_file(file_format):
         form['pricing'] = request.form['pricing']
         form['free_disposal'] = request.form.get('free_disposal')
         try:
-            rule = get_rule(form['pricing'])
+            rule = get_rule(form['pricing'], max_perms_to_consider=max_perms_to_consider)
             f = request.files['fileupload']
             if file_format == 'csv':
                 reader = file2reader(f)

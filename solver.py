@@ -1,18 +1,15 @@
 import argparse
 import json
-import os
 from io import StringIO
 from tabulate import tabulate
 from md.auction import Problem, Auction
-from md.auction_csv import file2reader, decode_csv_bidders, encode_csv_solution
+from md.auction_csv import file2reader, decode_csv_bidders, encode_csv_solution, get_file_extension
 from md.auction_json import decode_problem, ObjectEncoder
 from md.auction_txt import parse_bidders
 from md.lindsay2018 import get_rule
 
 
-def get_file_extension(filename):
-    _, file_extension = os.path.splitext(filename)
-    return file_extension.lower()
+
 
 
 def to_txt(solution):

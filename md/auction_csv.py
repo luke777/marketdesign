@@ -1,6 +1,7 @@
 from md.auction import Bid, Bidder
 import csv
 import chardet as chardet
+import os
 
 HEADERS = ('name', 'xor_group', 'label', 'divisible', 'value')
 
@@ -12,6 +13,9 @@ def to_number(s):
         x = float(s)
     return x
 
+def get_file_extension(filename):
+    _, file_extension = os.path.splitext(filename)
+    return file_extension.lower()
 
 def decode_csv_bid(dct, goods):
     for k in ['label', 'divisible', 'xor_group']:

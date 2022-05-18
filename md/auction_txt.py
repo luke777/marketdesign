@@ -1,7 +1,8 @@
-from md.auction import Bid, Bidder, Problem
-from md.auction_csv import to_number
+from md.auction import Bid, Bidder
+from md.auction_csv import to_number, encode_csv_solution
 import re
-
+from io import StringIO
+from tabulate import tabulate
 
 def parse_bidders(s):
     s = s.strip()
@@ -66,3 +67,15 @@ def parse_bidders(s):
     if len(bidders) < 2:
         raise ValueError("There must be at least 2 bidders.")
     return bidders
+
+def to_txt(solution):
+    si = StringIO()
+    encode_csv_solution(solution, si, delimiter=',')
+
+    data = []
+    for row in si.getvalue().strip().split('\n'):
+        data.append(row.strip().split(','))
+    note = 'Pricing = {}, total surplus = {}, sum of payments = {}'.format(solution.rule, solution.surplus,
+                                                                           solution.sum_payments())
+    table = tabulate(data, headers='firstrow', tablefmt='rst')
+    return table + '\n' + note

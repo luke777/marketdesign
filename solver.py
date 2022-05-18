@@ -1,28 +1,16 @@
 import argparse
 import json
-from io import StringIO
-from tabulate import tabulate
 from md.auction import Problem, Auction
 from md.auction_csv import file2reader, decode_csv_bidders, encode_csv_solution, get_file_extension
 from md.auction_json import decode_problem, ObjectEncoder
-from md.auction_txt import parse_bidders
+from md.auction_txt import parse_bidders, to_txt
 from md.lindsay2018 import get_rule
 
 
 
 
 
-def to_txt(solution):
-    si = StringIO()
-    encode_csv_solution(solution, si, delimiter=',')
 
-    data = []
-    for row in si.getvalue().strip().split('\n'):
-        data.append(row.strip().split(','))
-    note = 'Pricing = {}, total surplus = {}, sum of payments = {}'.format(solution.rule, solution.surplus,
-                                                                           solution.sum_payments())
-    table = tabulate(data, headers='firstrow', tablefmt='rst')
-    return table + '\n' + note
 
 
 parser = argparse.ArgumentParser()

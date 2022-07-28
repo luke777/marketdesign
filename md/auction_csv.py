@@ -78,6 +78,25 @@ def encode_csv_solution(solution, csv_file, delimiter=','):
                'payment': solution.payments.get(bidder.name)}
         writer.writerow(row)
 
+def encode_csv_problem(problem, csv_file, delimiter=','):
+    goods = problem.list_goods()
+    headers = list(HEADERS) + goods
+    writer = csv.DictWriter(csv_file, fieldnames=headers, delimiter=delimiter)
+    writer.writeheader()
+
+    for bidder in problem.bidders:
+        # First write the bids.
+        for bid in bidder.bids:
+            row = {'name': bidder.name, 'value': bid.v}
+            if bid.xor_group:
+                row['xor_group'] = bid.xor_group
+            if bid.label:
+                row['label'] = bid.label
+            if bid.divisible:
+                row['divisible'] = 1
+            for good in bid.q.keys():
+                row[good] = bid.q[good]
+            writer.writerow(row)
 
 def file2reader(f):
     # Use chardet to infer the encoding of the csv file.

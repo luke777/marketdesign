@@ -1,6 +1,6 @@
-<!DOCTYPE html>
-<html><head>
-<meta http-equiv="content-type" content="text/html; charset=UTF-8">
+<!doctype html>
+<html>
+  <head>
     <title>Market solver API</title>
     <style type="text/css">
       body {
@@ -180,6 +180,12 @@
   <body>
   <h1>Market solver API</h1>
     <div class="app-desc">This is the api for the market solver.</div>
+    <div class="app-desc">More information: <a href="https://helloreverb.com">https://helloreverb.com</a></div>
+    <div class="app-desc">Contact Info: <a href="hello@helloreverb.com">hello@helloreverb.com</a></div>
+    <div class="app-desc">Version: 1.0.1</div>
+    
+    <div class="license-info">All rights reserved</div>
+    <div class="license-url">http://apache.org/licenses/LICENSE-2.0.html</div>
   <h2>Access</h2>
 
   <h2><a name="__Methods">Methods</a></h2>
@@ -204,8 +210,8 @@
     <div class="field-items">
       <div class="param">rule (required)</div>
       
-            <div class="param-desc"><span class="param-type">Path Parameter</span> <p>Pricing rule:</p> <ul> <li><code>Lindsay2018</code> - Shapley value based pricing as described by Lindsay (2018).</li> <li><code>VCG</code> - Vickrey–Clarke–Groves pricing.</li> <li><code>PaB</code> - Pay-as-bid pricing.</li> </ul>
- </div>    </div>  <!-- field-items -->
+            <div class="param-desc"><span class="param-type">Path Parameter</span> <p>Pricing rule:</p> <ul> <li><code>Lindsay2018</code> - Shapley value based pricing as described by Lindsay (2018).</li> <li><code>VCG</code> - Vickrey-Clarke-Groves pricing.</li> <li><code>PaB</code> - Pay-as-bid pricing.</li> </ul>
+ </div>    </div>
 
     <h3 class="field-label">Consumes</h3>
     This API call consumes the following media types via the <span class="header">Content-Type</span> request header:
@@ -217,7 +223,7 @@
     <div class="field-items">
       <div class="param">body <a href="#Problem">Problem</a> (required)</div>
       
-            <div class="param-desc"><span class="param-type">Body Parameter</span> — Problem to solve </div>
+            <div class="param-desc"><span class="param-type">Body Parameter</span> &mdash; Problem to solve </div>
                 </div>  <!-- field-items -->
 
 
@@ -300,7 +306,7 @@
     invalid input, object invalid
         <a href="#"></a>
   </div> <!-- method -->
-  <hr>
+  <hr/>
 
   <h2><a name="__Models">Models</a></h2>
   [ Jump to <a href="#__Methods">Methods</a> ]
@@ -317,22 +323,16 @@
     <h3><a name="Bid"><code>Bid</code></a> <a class="up" href="#__Models">Up</a></h3>
     
     <div class="field-items">
-      <div class="param">v </div><div class="param-desc"><span class="param-type"><a href="#BigDecimal">BigDecimal</a></span>
- The amount of money bid.  Positive values indicate paying money 
-(buying) and negative values indicate receiving money (selling). </div>
-<div class="param">q </div><div class="param-desc"><span class="param-type"><a href="#BigDecimal">map[String, BigDecimal]</a></span>
- A map specifying the items offered and/or demanded.  The map keys are 
-the name of the good.  The map values are the quantities.  Positive 
-values indicate giving (selling) and negative values indicate taking 
-(buying). </div>
-          <div class="param-desc"><span class="param-type">example: {"a":1,"b":1}</span></div>
+      <div class="param">v </div><div class="param-desc"><span class="param-type"><a href="#BigDecimal">BigDecimal</a></span> The amount of money bid.  Positive values indicate paying money (buying) and negative values indicate receiving money (selling). </div>
+<div class="param">q </div><div class="param-desc"><span class="param-type"><a href="#BigDecimal">map[String, BigDecimal]</a></span> A map specifying the items offered and/or demanded.  The map keys are the name of the good.  The map values are the quantities.  Positive values indicate giving (selling) and negative values indicate taking (buying). </div>
+          <div class="param-desc"><span class="param-type">example: {&quot;a&quot;:1,&quot;b&quot;:1}</span></div>
 <div class="param">xor_group (optional)</div><div class="param-desc"><span class="param-type"><a href="#string">String</a></span> Used for XOR bids.  Only one bid in each XOR group can be winning. </div>
 <div class="param">divisible (optional)</div><div class="param-desc"><span class="param-type"><a href="#boolean">Boolean</a></span> whether the bid can partially transact. </div>
-<div class="param">divisibility (optional)</div><div class="param-desc"><span class="param-type"><a href="#string">String</a></span>
- <p>divisibility:</p> <ul> <li><code>indivisible</code> - only complete bid transacts</li> <li><code>divisible</code> - bid can partially transact.</li> <li><code>mixed</code> - for use with XOR bids, within the XOR group, bids can partially transact but the sum within the XOR group of the factions that transact must equal 0 or 1.</li> </ul>
+<div class="param">divisibility (optional)</div><div class="param-desc"><span class="param-type"><a href="#BigDecimal">BigDecimal</a></span> &lt;p&gt;divisibility:&lt;/p&gt;
+<p>divisibility:</p> <ul> <li>0 - <code>indivisible</code> - only complete bid transacts</li> <li>1 - <code>divisible</code> - bid can partially transact.</li> <li>2 - <code>mixed</code> - for use with XOR bids, within the XOR group, bids can partially transact but the sum within the XOR group of the factions that transact must equal 0 or 1.</li> </ul>
  </div>
         <div class="param-enum-header">Enum:</div>
-        <div class="param-enum">indivisible</div><div class="param-enum">divisible</div><div class="param-enum">mixed</div>
+        <div class="param-enum">0</div><div class="param-enum">1</div><div class="param-enum">2</div>
 <div class="param">label (optional)</div><div class="param-desc"><span class="param-type"><a href="#string">String</a></span> Optional property used to aid interpreting the problem. </div>
 <div class="param">winning (optional)</div><div class="param-desc"><span class="param-type"><a href="#BigDecimal">BigDecimal</a></span> Used after the market has been solved to indicate if the bid is winning.  If the property is present, then the bid is winning. </div>
     </div>  <!-- field-items -->
@@ -361,13 +361,12 @@ values indicate giving (selling) and negative values indicate taking
       <div class="param">rule </div><div class="param-desc"><span class="param-type"><a href="#string">String</a></span>  </div>
           <div class="param-desc"><span class="param-type">example: Lindsay2018</span></div>
 <div class="param">surplus_shares </div><div class="param-desc"><span class="param-type"><a href="#BigDecimal">map[String, BigDecimal]</a></span>  </div>
-          <div class="param-desc"><span class="param-type">example: {"seller":10,"buyer h":30}</span></div>
+          <div class="param-desc"><span class="param-type">example: {&quot;seller&quot;:10,&quot;buyer h&quot;:30}</span></div>
 <div class="param">payments </div><div class="param-desc"><span class="param-type"><a href="#BigDecimal">map[String, BigDecimal]</a></span>  </div>
 <div class="param">surplus </div><div class="param-desc"><span class="param-type"><a href="#BigDecimal">BigDecimal</a></span>  </div>
           <div class="param-desc"><span class="param-type">example: 20</span></div>
 <div class="param">problem </div><div class="param-desc"><span class="param-type"><a href="#Problem">Problem</a></span>  </div>
     </div>  <!-- field-items -->
   </div>
-  
-
-</body></html>
+  </body>
+</html>

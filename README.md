@@ -8,15 +8,19 @@ paper to allow bidders to express their preferences more concisely.
 # Installing on Windows
 Install [git](https://git-scm.com/downloads) and [Python 3.x](https://www.python.org/downloads/) if not already installed.
 
-Get a copy of the project. \
-`git clone https://github.com/luke777/marketdesign.git` \
-Set up and activate the virtual environment \
-`cd marketdesign` \
-`py -m venv env` \
-`env\Scripts\activate`\
-`py -m pip install -r requirements.txt`\
-Verify that the command-line solver runs. \
-`py solver.py examples\Lindsay2018_t1_seller_and_2_buyers.txt`
+
+```
+# Get a copy of the project. 
+git clone https://github.com/luke777/marketdesign.git
+# Set up and activate the virtual environment 
+cd marketdesign
+py -m venv env
+env\Scripts\activate
+py -m pip install -r requirements.txt
+# Verify that the command-line solver runs
+py solver.py examples\Lindsay2018_t1_seller_and_2_buyers.txt
+
+```
 
 Note, these instructions are for Windows.  On Linux/macOS try using `python3` instead of `py` to run python 
 and `source env/bin/activate` instead of `.\env\Scripts\activate` to activate the virtual environment.

@@ -23,7 +23,7 @@ if __name__ == '__main__':
                     for bid in bidder.bids:
                         dct = {'name': bidder.name, 'xor_group': bid.xor_group, 'label': bid.label,
                                'value': bid.v}
-                        if bid.divisible is True:
+                        if bid.divisibility is True:
                             dct['divisible'] = 1
                         for good in goods:
                             if good in bid.q.keys():

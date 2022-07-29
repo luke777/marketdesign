@@ -1,4 +1,4 @@
-from md.auction import Bid, Bidder
+from md.auction import Bid, Bidder, Divisibility
 import csv
 import chardet as chardet
 import os
@@ -29,7 +29,12 @@ def decode_csv_bid(dct, goods):
             if s:
                 q[good] = to_number(s)
     v = to_number(dct['value'])
-    divisible = dct['divisible'] == '1'
+    if dct['divisible'] == '1':
+        divisible = Divisibility.DIVISIBLE
+    elif dct['divisible'] == '2':
+        divisible = Divisibility.MIXED
+    else:
+        divisible = Divisibility.INDIVISIBLE
     return Bid(v, q, label=dct['label'], xor_group=dct['xor_group'], divisible=divisible)
 
 
@@ -65,8 +70,11 @@ def encode_csv_solution(solution, csv_file, delimiter=','):
                 row['xor_group'] = bid.xor_group
             if bid.label:
                 row['label'] = bid.label
-            if bid.divisible:
-                row['divisible'] = 1
+            if bid.divisibility:
+                v = bid.divisibility.value
+                if v == 0:
+                    v = None
+                row['divisible'] = v
             for good in bid.q.keys():
                 row[good] = bid.q[good]
             row['winning'] = bid.winning
@@ -92,7 +100,7 @@ def encode_csv_problem(problem, csv_file, delimiter=','):
                 row['xor_group'] = bid.xor_group
             if bid.label:
                 row['label'] = bid.label
-            if bid.divisible:
+            if bid.divisibility:
                 row['divisible'] = 1
             for good in bid.q.keys():
                 row[good] = bid.q[good]

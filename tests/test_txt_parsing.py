@@ -35,10 +35,10 @@ class CsvTestCase(unittest.TestCase):
 
     # Divisible bids
     def test4(self):
-        bidders = parse_bidders("d 20 -1 0 , 30 0 -1 \n  d -10 1 1")
-        self.assertTrue(bidders[0].bids[0].divisible)
-        self.assertFalse(bidders[0].bids[1].divisible)
-        self.assertTrue(bidders[1].bids[0].divisible)
+        bidders = parse_bidders("d 20 -1 0 , 30 0 -1 \n  m -10 1 1")
+        self.assertEqual(Divisibility.DIVISIBLE, bidders[0].bids[0].divisibility)
+        self.assertEqual(Divisibility.INDIVISIBLE, bidders[0].bids[1].divisibility)
+        self.assertEqual(Divisibility.MIXED, bidders[1].bids[0].divisibility)
 
     # Extra whitespace
     def test5(self):

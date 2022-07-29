@@ -1,19 +1,36 @@
-from md.auction import Bid, Bidder, Problem
+from md.auction import Bid, Bidder, Problem, Divisibility
 from json import JSONEncoder
 
 
 class ObjectEncoder(JSONEncoder):
     def default(self, o):
+        if isinstance(o, Divisibility):
+            return o.value
         dct = o.__dict__
         # Remove None keys with value None
         return {k: v for k, v in dct.items() if v is not None}
 
 
 def decode_bid(dct):
-    for k in ['label', 'winning', 'xor_group', 'divisible']:
+    if 'divisible' in dct and 'divisibility' in dct:
+        raise ValueError("Has both divisible and divisibility")
+
+    for k in ['label', 'winning', 'xor_group']:
         if k not in dct:
             dct[k] = None
-    divisible = dct['divisible'] == True
+
+    divisible = Divisibility.INDIVISIBLE
+    #Old api
+    if 'divisible' in dct:
+        if dct['divisible']:
+            divisible = Divisibility.DIVISIBLE
+        else:
+            divisible = Divisibility.INDIVISIBLE
+
+    #Newer api
+    if 'divisibility' in dct:
+        divisible = Divisibility(dct['divisibility'])
+
     return Bid(dct['v'], dct['q'], label=dct['label'], winning=dct['winning'], xor_group=dct['xor_group'],
                divisible=divisible)
 

@@ -1,4 +1,4 @@
-from md.auction import Bid, Bidder
+from md.auction import Bid, Bidder, Divisibility
 from md.auction_csv import to_number, encode_csv_solution
 import re
 from io import StringIO
@@ -40,10 +40,13 @@ def parse_bidders(s):
             for bid_str in bids:
                 items = bid_str.split()
                 if items[0].lower() == 'd':
-                    divisible = True
+                    divisible = Divisibility.DIVISIBLE
+                    items.pop(0)
+                elif items[0].lower() == 'm':
+                    divisible = Divisibility.MIXED
                     items.pop(0)
                 else:
-                    divisible = False
+                    divisible = Divisibility.INDIVISIBLE
 
                 n_goods = len(items)
 

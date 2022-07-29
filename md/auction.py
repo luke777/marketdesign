@@ -1,16 +1,27 @@
 from mip import Model, xsum, maximize, BINARY, CONTINUOUS
 from collections import defaultdict
 from copy import copy
+from enum import Enum, unique
+
+
+@unique
+class Divisibility(Enum):
+    INDIVISIBLE = 0
+    DIVISIBLE = 1
+    MIXED = 2
 
 
 class Bid:
-    def __init__(self, v, q, xor_group=None, winning=None, label=None, divisible=False):
+    def __init__(self, v, q, xor_group=None, winning=None, label=None,
+                 divisible: Divisibility = Divisibility.INDIVISIBLE):
+        if not isinstance(divisible, Divisibility):
+            raise TypeError
         self.v = v
         self.q = q
         self.xor_group = xor_group
         self.winning = winning
         self.label = label
-        self.divisible = divisible
+        self.divisibility = divisible
 
 
 class Bidder:
@@ -19,7 +30,7 @@ class Bidder:
         self.name = name
         self.bids = []
 
-    def add_bid(self, v, q, xor_group=None, label=None, divisible=False):
+    def add_bid(self, v, q, xor_group=None, label=None, divisible=Divisibility.INDIVISIBLE):
         b = Bid(v, q, label=label, divisible=divisible)
         if xor_group is not None:
             b.xor_group = xor_group
@@ -103,6 +114,7 @@ class Solution:
     def sum_payments(self):
         return sum(self.payments.values())
 
+
 class Auction:
 
     def build_model(self, p):
@@ -110,12 +122,18 @@ class Auction:
         m.verbose = 0
         I = range(len(p.bidders))
 
+        mixed_xor_groups = set()
+
         def add_bid_var(i, j):
             name = 'bid[{}][{}]'.format(i, j)
-            if p.bidders[i].bids[j].divisible:
-                return m.add_var(var_type=CONTINUOUS, lb=0, ub=1, name=name)
-            else:
+            bid = p.bidders[i].bids[j]
+            if bid.divisibility == Divisibility.INDIVISIBLE:
                 return m.add_var(var_type=BINARY, name=name)
+            else:
+                if bid.divisibility == Divisibility.MIXED and bid.xor_group is not None:
+                    mixed_xor_groups.add(bid.xor_group)
+
+                return m.add_var(var_type=CONTINUOUS, lb=0, ub=1, name=name)
 
         # Create variables
         winning = [[add_bid_var(i, j) for j in p.bidders[i].bid_ids()] for i in I]
@@ -136,7 +154,12 @@ class Auction:
         # Add XOR constraints
         for i in I:
             for group_name, bid_ids in p.bidders[i].xor_groups().items():
-                if len(bid_ids) > 1:
+                if group_name in mixed_xor_groups:
+                    # Need to setup a variable.
+                    name = 'xorgroup_{}'.format(group_name)
+                    var = m.add_var(var_type=BINARY, name=name)
+                    m += xsum(winning[i][j] for j in bid_ids) == var, 'xor[{}][{}]'.format(i, group_name)
+                elif len(bid_ids) > 1:
                     m += xsum(winning[i][j] for j in bid_ids) <= 1, 'xor[{}][{}]'.format(i, group_name)
         return m, I, winning
 
@@ -191,6 +214,3 @@ class VCG(PaymentRule):
             sol.populate_surplus_and_payment(bidder, surplus_share)
 
         sol.rule = 'vcg'
-
-
-

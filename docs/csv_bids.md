@@ -19,5 +19,5 @@ An example with three bidders and two goods is as follows.
 The following optional columns can be included if desired.
 
 - **xor_group** A string identifying the xor-group or empty if no xor-group applies.  
-- **divisible** A "1" if the bid is divisible or empty if it is indivisible.
+- **divisible** A "1" if the bid is divisible or empty if it is indivisible. A "2" if the bid is "mixed" divisible.
 - **label**  A string to aid interpreting the results.

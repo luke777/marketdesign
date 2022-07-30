@@ -10,17 +10,20 @@ For example, an offer to sell 6 apples for £2 would have a value of -2 and a qu
 a quantity of -1 apple and -2 bananas.  Positive numbers indicate giving money or goods and 
 negative numbers indicate taking.
 
-## Divisibility
-By default, bids are treated as indivisible.  This means that if the bid to sell 6 apples 
-transacts, then all six apples are sold.  Optionally, bids can be 
-set as divisible.  This would allow, say, two of the six apples (or even just a slice of 
-apple) to be sold.
-
 ## XOR Bids
 When a bidder submits multiple bids, some of the bids can be mutually exclusive (XOR bids) 
 and some can be independent (OR bids).  For example, suppose a bidder would like a 
 snack of either an apple or a banana but not both.  They would submit two bids with the same
  "XOR group".  This adds the restriction that at most one of the two bids can transact. 
+
+## Divisibility
+By default, bids are treated as indivisible.  This means that if the bid to sell 6 apples 
+transacts, then all six apples are sold.  Optionally, bids can be 
+set as divisible.  This would allow, say, two of the six apples (or even just a slice of 
+apple) to be sold. XOR bids can also be set as "mixed" divisible. This means within an XOR group, 
+fractional transactions are allowed but the sum of the fractions must equal 0 or 1. 
+
+
 
 ##  Labels
 The bidding language allows a _label_ to be attached to each bid.  The label does not 

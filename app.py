@@ -20,6 +20,7 @@ executor = Executor(app)
 
 max_perms_to_consider = int(os.environ.get('MAX_PERMS_TO_CONSIDER', '1024'))
 
+
 @app.route('/')
 def index():
     return render_template('index.html')
@@ -30,6 +31,7 @@ def my_solve(problem, rule, form):
     solution = auction.winner_determination(problem)
     rule.calc_surplus_shares(solution)
     return solution, form
+
 
 # Pushes Server-Sent Events (SSE) to the browser about the status of a posted problem.
 # Updates are sent every 20 seconds to keep the connection alive.
@@ -56,6 +58,7 @@ def listen():
 def get_result():
     uid = request.args.get("uid")
     output_format = request.args.get("format")
+    download = request.args.get("download")
 
     if not executor.futures._state(uid):
         return "No such element {}".format(uid)
@@ -68,18 +71,26 @@ def get_result():
         result = build_result(solution)
         return render_template('market.html', form=form, solution=result)
     elif output_format == 'csv':
-        si = StringIO()
-        encode_csv_solution(solution, si)
-        output = make_response(si.getvalue())
-        output.headers["Content-Disposition"] = "attachment; filename=results.csv"
-        output.headers["Content-type"] = "text/csv"
-        return output
+        if download:
+            si = StringIO()
+            encode_csv_solution(solution, si)
+            output = make_response(si.getvalue())
+            output.headers["Content-Disposition"] = "attachment; filename=results.csv"
+            output.headers["Content-type"] = "text/csv"
+            return output
+        else:
+            result = build_result(solution)
+            return render_template('upload.html', form=form, solution=result)
     elif output_format == 'json':
-        json_str = json.dumps(solution, indent=4, cls=ObjectEncoder)
-        output = make_response(json_str)
-        output.headers["Content-Disposition"] = "attachment; filename=results.json"
-        output.headers["Content-type"] = "text/json"
-        return output
+        if download:
+            json_str = json.dumps(solution, indent=4, cls=ObjectEncoder)
+            output = make_response(json_str)
+            output.headers["Content-Disposition"] = "attachment; filename=results.json"
+            output.headers["Content-type"] = "text/json"
+            return output
+        else:
+            result = build_result(solution)
+            return render_template('upload.html', form=form, solution=result)
     else:
         return "Unknown format {}".format(output_format)
 
@@ -161,18 +172,20 @@ def upload_file(file_format):
     result = None
     form = {'error': None,
             'free_disposal': True,
+            'download': False,
             'format': file_format,
             'pricing': 'lindsay2018'}
     if request.method == 'POST':
         form['pricing'] = request.form['pricing']
         form['free_disposal'] = request.form.get('free_disposal')
+        form['download'] = request.form.get('download')
         try:
             rule = get_rule(form['pricing'], max_perms_to_consider=max_perms_to_consider)
             f = request.files['fileupload']
             if file_format == 'csv':
                 reader = file2reader(f)
                 bidders = decode_csv_bidders(reader)
-                problem = Problem(bidders=bidders,free_disposal=form['free_disposal'])
+                problem = Problem(bidders=bidders, free_disposal=form['free_disposal'])
             elif file_format == 'json':
                 dct = json.load(f)
                 problem = decode_problem(dct)
@@ -181,7 +194,7 @@ def upload_file(file_format):
 
             uid = uuid.uuid4().hex
             executor.submit_stored(uid, my_solve, problem, rule, form)
-            return redirect(url_for('get_result', uid=uid, format=file_format))
+            return redirect(url_for('get_result', uid=uid, format=file_format, download=form['download']))
         except Exception as err:
             print(err)
             form['error'] = err

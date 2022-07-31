@@ -52,5 +52,7 @@ def decode_problem(dct):
             dct[k] = None
     if 'free_disposal' not in dct:
         dct['free_disposal'] = True
-    return Problem(bidders=bidders, description=dct['description'], goods=dct['goods'],
+    problem = Problem(bidders=bidders, description=dct['description'], goods=dct['goods'],
                    free_disposal=dct['free_disposal'])
+    problem.validate()
+    return problem

@@ -82,3 +82,48 @@ def to_txt(solution):
                                                                            solution.sum_payments())
     table = tabulate(data, headers='firstrow', tablefmt='rst')
     return table + '\n' + note
+
+def encode_problem(problem):
+    si = StringIO()
+    goods = problem.list_goods()
+    def write_bid(bid):
+        if bid.divisibility == Divisibility.DIVISIBLE:
+            si.write(" d")
+        elif bid.divisibility == Divisibility.MIXED:
+            si.write(" m")
+
+        si.write(str(bid.v))
+        for good in goods:
+            if good in bid.q:
+                si.write(" " + str(bid.q[good]))
+            else:
+                si.write(" 0")
+
+    for bidder in problem.bidders:
+        si.write(bidder.name)
+        si.write(": ")
+        xor_groups = bidder.xor_groups()
+
+        first_group = True
+        # Write xor groups
+        for key, bid_ids in xor_groups.items():
+            if not first_group:
+                si.write("| ")
+            first_bid = True
+            for bid_id in bid_ids:
+                if not first_bid:
+                    si.write(", ")
+                bid = bidder.bids[bid_id]
+                write_bid(bid)
+                first_bid = False
+                first_group = False
+        # Write bids not in xor groups.
+        for bid in bidder.bids:
+            if bid.xor_group is None:
+                if not first_group:
+                    si.write("| ")
+                write_bid(bid)
+                first_group = False
+
+        si.write("\n")
+    return si.getvalue()

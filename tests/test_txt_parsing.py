@@ -59,3 +59,12 @@ class CsvTestCase(unittest.TestCase):
 
     def test9(self):
         self.assertRaises(ValueError, parse_bidders,"Buyer : : 20 -1\n -10 1")
+
+    def test_encode(self):
+        p = Problem()
+        p.add_bidder(Bidder('buyer').add_bid(20, {'a': -1}))
+        p.add_bidder(Bidder('seller').add_bid(-10, {'a': 1}))
+        s = encode_problem(p)
+        print(s)
+
+

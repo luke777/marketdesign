@@ -1,9 +1,9 @@
 import argparse
 import json
-from md.auction import Problem, Auction
-from md.auction_csv import file2reader, decode_csv_bidders, encode_csv_solution, get_file_extension, encode_csv_problem
-from md.auction_json import decode_problem, ObjectEncoder
-from md.auction_txt import parse_bidders, to_txt
+
+from md.auction_csv import get_file_extension, encode_csv_problem
+from md.auction_json import ObjectEncoder
+from md.auction_txt import encode_problem
 from solver import read_problem
 
 
@@ -25,10 +25,12 @@ def main():
             elif output_extension == '.json':
                 json.dump(p, f, indent=4, cls=ObjectEncoder)
             else:
-                raise NotImplementedError("Not implemented yet")
+                s = encode_problem(p)
+                f.write(s)
 
     else:
-        raise NotImplementedError("Not implemented yet")
+        s = encode_problem(p)
+        print(s)
 
 if __name__ == "__main__":
     main()

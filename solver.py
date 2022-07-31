@@ -58,6 +58,7 @@ def read_problem(input_filename, free_disposal=None):
             txt = txt_file.read()
             bidders = parse_bidders(txt)
             p = Problem(bidders=bidders)
+            p.validate()
             p.free_disposal = free_disposal
     return p
 

@@ -62,6 +62,10 @@ class Problem:
         return Problem(description=self.description, goods=self.goods, bidders=self.bidders,
                        free_disposal=self.free_disposal)
 
+    def add_bidder(self, bidder):
+        self.bidders.append(bidder)
+        return self
+
     # Returns an order list of the goods.
     def list_goods(self):
         s = set()
@@ -71,6 +75,25 @@ class Problem:
                     s.add(good)
         return sorted(s)
 
+    # Raises an exception if an inconsistency is detected.
+    def validate(self):
+        # Check bids in the same xor group have the same divisibility.
+        # Also check for repeated bidder names.
+        bidder_names = set()
+        for bidder in self.bidders:
+            if bidder.name in bidder_names:
+                raise ValueError("Repeated bidder name: {}".format(bidder.name))
+
+            bidder_names.add(bidder.name)
+            xorgroup2type = {}
+            for bid in bidder.bids:
+                if bid.xor_group:
+                    if bid.xor_group in xorgroup2type:
+                        if bid.divisibility != xorgroup2type[bid.xor_group]:
+                            raise ValueError(
+                                "Bids in same xor group should have the same divisibility: {}, {}".format(bidder.name, bid.xor_group))
+                    else:
+                        xorgroup2type[bid.xor_group] = bid.divisibility
 
 class Solution:
 

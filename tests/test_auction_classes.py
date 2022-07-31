@@ -37,6 +37,17 @@ class MyTestCase(unittest.TestCase):
         goods = p.list_goods()
         self.assertEqual(["a", "b", "z"], goods)
 
+    # Adding two bidders with same name should raise an exception on validation.
+    def test_problem_validation(self):
+        p = Problem()
+        b1 = Bidder("local")
+        b1.add_bid(10, {"z": 2})
+        b2 = Bidder("local")
+        b2.add_bid(10, {"z": 2})
+        p.bidders.append(b1)
+        p.bidders.append(b2)
+        with self.assertRaises(Exception):
+            p.validate()
 
 if __name__ == '__main__':
     unittest.main()

@@ -1,4 +1,4 @@
-from md.auction import Bid, Bidder, Divisibility
+from md.auction import Bid, Bidder, Divisibility, Problem
 import csv
 import chardet as chardet
 import os
@@ -21,10 +21,18 @@ def decode_csv_bid(dct, goods):
     for k in ['label', 'divisible', 'xor_group']:
         if k not in dct:
             dct[k] = None
+        elif dct[k] is not None:
+            if dct[k].strip() == '':
+                dct[k] = None
+
+    # Set xor_group to None in case of empty string.
+    if dct['xor_group'] is not None:
+        if dct['xor_group'].strip() == '':
+            dct['xor_group'] = None
     q = {}
     for good in goods:
         if good in dct.keys():
-            s = dct[good]
+            s = dct[good].strip()
             # Ignore empty strings
             if s:
                 q[good] = to_number(s)
@@ -37,12 +45,24 @@ def decode_csv_bid(dct, goods):
         divisible = Divisibility.INDIVISIBLE
     return Bid(v, q, label=dct['label'], xor_group=dct['xor_group'], divisible=divisible)
 
+def decode_csv_problem(reader: csv.DictReader):
+    bidders = decode_csv_bidders(reader)
+    problem = Problem(bidders=bidders)
+    problem.validate()
+    return problem
 
 def decode_csv_bidders(reader: csv.DictReader):
+    # Check for duplicate column names
+    n_columns = len(reader.fieldnames)
+    if n_columns != len(set(reader.fieldnames)):
+        raise ValueError(str(reader.fieldnames))
+
     goods = [good for good in reader.fieldnames if good not in HEADERS]
     bidders = []
     name2bidder = {}
     for row in reader:
+        if n_columns != len(row):
+            raise ValueError(row)
         name = row['name']
         if name not in name2bidder.keys():
             bidder = Bidder(name)
@@ -101,7 +121,10 @@ def encode_csv_problem(problem, csv_file, delimiter=','):
             if bid.label:
                 row['label'] = bid.label
             if bid.divisibility:
-                row['divisible'] = 1
+                v = bid.divisibility.value
+                if v == 0:
+                    v = None
+                row['divisible'] = v
             for good in bid.q.keys():
                 row[good] = bid.q[good]
             writer.writerow(row)
@@ -115,6 +138,12 @@ def file2reader(f):
     fstring = f.read().decode(encoding)
 
     lines = fstring.splitlines()
+    header = [h.strip() for h in lines[0].split(',')]
+    lines.pop(0)
+    return csv.DictReader(lines, fieldnames=header)
+
+def string2reader(s):
+    lines = s.splitlines()
     header = [h.strip() for h in lines[0].split(',')]
     lines.pop(0)
     return csv.DictReader(lines, fieldnames=header)

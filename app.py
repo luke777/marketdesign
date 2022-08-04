@@ -127,7 +127,13 @@ def build_result(solution):
              'rule': solution.rule,
              'sum_payments': 0}
 
+
+
     goods = solution.problem.goods
+    good_names = ['cash']
+    good_names.extend(goods)
+    model['goods_names'] = str(good_names)
+
     for bidder in solution.problem.bidders:
         bids = []
         model['sum_payments'] += solution.payments.get(bidder.name, 0)

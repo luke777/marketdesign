@@ -21,8 +21,9 @@ py -m pip install -r requirements.txt
 py solver.py examples\Lindsay2018_t1_seller_and_2_buyers.txt
 
 ```
+If Windows PowerShell gives the error message "running scripts is disabled on this system", try executing the following `Set-ExecutionPolicy Unrestricted -Scope Process`
 
-Note, these instructions are for Windows.  On Linux/macOS try using `python3` instead of `py` to run python 
+On Linux/macOS try using `python3` instead of `py` to run python 
 and `source env/bin/activate` instead of `.\env\Scripts\activate` to activate the virtual environment.
 
 # Command-line solver

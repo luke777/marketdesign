@@ -75,6 +75,14 @@ class Problem:
                     s.add(good)
         return sorted(s)
 
+    # Returns a list of bidders' names
+    def bidder_names(self):
+        names = []
+        for bidder in self.bidders:
+            names.append(bidder.name)
+
+        return names
+
     # Raises an exception if an inconsistency is detected.
     def validate(self):
         # Check bids in the same xor group have the same divisibility.

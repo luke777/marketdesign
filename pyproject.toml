@@ -1,0 +1,31 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+name = "marketdesign"
+version = "0.0.1a1"
+authors = [
+  { name="Luke Lindsay", email="l.lindsay@exeter.ac.uk" },
+]
+description = "This project is a python implementation of the market mechanism described in the paper 'Shapley value based pricing for auctions and exchanges' (Lindsay 2018)."
+readme = "README.md"
+requires-python = ">=3.7"
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent",
+]
+dependencies = [
+    'mip==1.14.0',
+    'chardet~=4.0.0',
+    'tabulate~=0.8.9'
+]
+
+[project.urls]
+"Homepage" = "https://github.com/luke777/marketdesign"
+
+[tool.hatch.build]
+include = [
+  "md/*.py",
+]

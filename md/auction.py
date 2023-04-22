@@ -47,6 +47,9 @@ class Bidder:
                 groups[bid.xor_group].append(i)
         return groups
 
+    # Return the ids of bids that are not xor bids.
+    def non_xor_bid_ids(self):
+        return [i for i in self.bid_ids() if self.bids[i].xor_group is None]
 
 class Problem:
 
@@ -82,6 +85,24 @@ class Problem:
             names.append(bidder.name)
 
         return names
+
+    # Returns an upper bound on the surplus.  Calculated as sum of bids with positive value.
+    def surplus_upper_bound(self):
+        ub = 0
+        for bidder in self.bidders:
+            for bid in bidder.bids:
+                if bid.xor_group is None:
+                    ub += max(0, bid.v)
+
+            for name, xor_group in bidder.xor_groups().items():
+                group_max = 0
+                for i in xor_group:
+                    bid = bidder.bids[i]
+                    group_max = max(group_max, bid.v)
+                ub += group_max
+
+        return ub
+
 
     # Raises an exception if an inconsistency is detected.
     def validate(self):
@@ -156,7 +177,7 @@ class Auction:
         mixed_xor_groups = set()
 
         def add_bid_var(i, j):
-            name = 'bid[{}][{}]'.format(i, j)
+            name = 'bid({},{})'.format(i, j)
             bid = p.bidders[i].bids[j]
             if bid.divisibility == Divisibility.INDIVISIBLE:
                 return m.add_var(var_type=BINARY, name=name)
@@ -178,20 +199,20 @@ class Auction:
             lhs = xsum(winning[i][j] * p.bidders[i].bids[j].q[good] for i in I for j in
                        p.bidders[i].bid_ids() if good in p.bidders[i].bids[j].q)
             if p.free_disposal:
-                m += lhs >= 0, 'supply is at least demand'
+                m += lhs >= 0, 'supply_is_at_least_demand'
             else:
-                m += lhs == 0, 'supply equals demand'
+                m += lhs == 0, 'supply_equals_demand'
 
         # Add XOR constraints
         for i in I:
             for group_name, bid_ids in p.bidders[i].xor_groups().items():
                 if group_name in mixed_xor_groups:
-                    # Need to setup a variable.
+                    # Need to set up a variable.
                     name = 'xorgroup_{}'.format(group_name)
                     var = m.add_var(var_type=BINARY, name=name)
-                    m += xsum(winning[i][j] for j in bid_ids) == var, 'xor[{}][{}]'.format(i, group_name)
+                    m += xsum(winning[i][j] for j in bid_ids) == var, 'xor({},{})'.format(i, group_name)
                 elif len(bid_ids) > 1:
-                    m += xsum(winning[i][j] for j in bid_ids) <= 1, 'xor[{}][{}]'.format(i, group_name)
+                    m += xsum(winning[i][j] for j in bid_ids) <= 1, 'xor({},{})'.format(i, group_name)
         return m, I, winning
 
     def winner_determination(self, p):

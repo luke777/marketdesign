@@ -73,11 +73,11 @@ def parse_bidders(s):
 
 def to_txt(solution):
     si = StringIO()
-    encode_csv_solution(solution, si, delimiter=',')
+    encode_csv_solution(solution, si, delimiter='|')
 
     data = []
     for row in si.getvalue().strip().split('\n'):
-        data.append(row.strip().split(','))
+        data.append(row.strip().split('|'))
     note = 'Pricing = {}, total surplus = {}, sum of payments = {}'.format(solution.rule, solution.surplus,
                                                                            solution.sum_payments())
     table = tabulate(data, headers='firstrow', tablefmt='rst')
@@ -88,9 +88,9 @@ def encode_problem(problem):
     goods = problem.list_goods()
     def write_bid(bid):
         if bid.divisibility == Divisibility.DIVISIBLE:
-            si.write(" d")
+            si.write(" d ")
         elif bid.divisibility == Divisibility.MIXED:
-            si.write(" m")
+            si.write(" m ")
 
         si.write(str(bid.v))
         for good in goods:

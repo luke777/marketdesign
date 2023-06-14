@@ -23,6 +23,19 @@ class Bid:
         self.label = label
         self.divisibility = divisible
 
+    # True if taking at least one type of good.
+    def is_buying(self):
+        for quantity in self.q.values():
+            if quantity < 0:
+                return True
+        return False
+
+    # True if providing at least one type of good.
+    def is_selling(self):
+        for quantity in self.q.values():
+            if quantity > 0:
+                return True
+        return False
 
 class Bidder:
 
@@ -68,6 +81,13 @@ class Problem:
     def add_bidder(self, bidder):
         self.bidders.append(bidder)
         return self
+
+    def get_bidder(self, name):
+        for bidder in self.bidders:
+            if bidder.name == name:
+                return bidder
+        raise KeyError(name)
+
 
     # Returns an order list of the goods.
     def list_goods(self):
@@ -141,7 +161,7 @@ class Solution:
         winners = []
         for i, bidder in enumerate(self.problem.bidders):
             for bid in bidder.bids:
-                if bid.winning > 0:
+                if bid.winning > 1e-6:
                     winners.append(i)
                     break
         return winners
@@ -240,6 +260,13 @@ class Auction:
 
 
 class PaymentRule:
+
+    def solve(self, problem: Problem):
+        a = Auction()
+        sol = a.winner_determination(problem)
+        self.calc_surplus_shares(sol)
+        return sol
+
     def calc_surplus_shares(self, solution: Solution):
         pass
 

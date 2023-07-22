@@ -1,5 +1,7 @@
 import argparse
 import json
+import time
+
 from md.auction import Problem, Auction
 from md.auction_csv import file2reader, decode_csv_bidders, encode_csv_solution, get_file_extension
 from md.auction_json import decode_problem, ObjectEncoder
@@ -8,6 +10,7 @@ from md.lindsay2018 import get_rule
 
 
 def main():
+    start_time = time.time()
     parser = argparse.ArgumentParser()
     parser.add_argument('input')
     parser.add_argument('-o', dest='output', help='output filename')
@@ -38,6 +41,7 @@ def main():
     else:
         print(to_txt(solution))
 
+    print("--- %s seconds ---" % (time.time() - start_time))
 
 def read_problem(input_filename, free_disposal=None):
     input_extension = get_file_extension(input_filename)

@@ -6,7 +6,7 @@ paper to allow bidders to express their preferences more concisely.
 
 
 # Installing on Windows
-Install [git](https://git-scm.com/downloads) and [Python 3.x](https://www.python.org/downloads/) if not already installed.
+Install [git](https://git-scm.com/downloads) and [Python 3.11.x](https://www.python.org/downloads/release/python-3119/) if not already installed.  Warning, the current version does not work with python 3.12 and 3.13.
 
 
 ```

@@ -35,13 +35,13 @@
     <p>This page demonstrates the market mechanism described in <a href="https://doi.org/10.1016/j.geb.2017.10.020">Lindsay
         (2018)</a>. A number of traders each submit one or more bids. The mechanism determines which bids are winning
         and the payment for each trader.</p>
-    <p><b>Number of goods</b> is the number of different types of good being traded. Money is counted as one of the
-        goods. For example, in a market where apples and bananas are bought and sold using money, the number of goods
-        would be 3.</p>
+  
     <p><b>Bids</b> specify what each trader is offering. Each row is a different
-        trader.
-        An example of the syntax for the bids in a market with 3 goods
-        (say, money, apples and bananas) is as follows.</p>
+        trader.  Bids are lists of numbers.  The length of the list is the number of goods.  Money is counted as one of the
+        goods. For example, in a market where apples and bananas are bought and sold using money, the number of goods
+        would be 3.
+        An example of the syntax for the bids in a market with money, apples and bananas
+     is as follows.</p>
     <pre>seller 1: -10 1 0, -15 1 1</pre>
     First the trader's name is stated followed by a colon (:). This part is optional. If it is omitted generic names
     will be generated. Then there is a list of bids. Each trader can submit several bids. XOR bids are
